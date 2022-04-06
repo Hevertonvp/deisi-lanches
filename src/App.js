@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import NavBar from "./components/navbar/NavBar";
+import GlobalStyles from "../src/styles/Global";
+import { ThemeProvider } from "styled-components";
+import DemoCarousel from "./components/carousel/Carousel";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Products from "./components/products/Products";
+import Cardapio from "./components/cardapio/Cardapio";
 
 function App() {
+  const theme = {
+    colors: {
+      body: '#99b86a',
+    },
+    fonts: {
+      navLink: "'Oleo Script', cursive",
+      colors: {},
+    },
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route exact path="/" element={<DemoCarousel />} />
+          <Route exact path="/products" element={<Products />} />
+          <Route exact path="/cardapio" element={<Cardapio />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
