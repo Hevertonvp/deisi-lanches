@@ -5,8 +5,8 @@ const StyledLogo = styled.img`
   height: 150px;
   width: 180px;
   border-radius: 50px;
-  margin-top: 90px;
-  z-index: 1;
+  margin-top: 150px;
+  z-index: 3;
 `;
 
 function Logo() {

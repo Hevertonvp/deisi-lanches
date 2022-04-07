@@ -1,6 +1,6 @@
 import React from 'react'
 import ProductCard from '../product/ProductCard'
-import { products } from '../../data/mockProducts'
+
 import styled from 'styled-components'
 
 
@@ -33,7 +33,7 @@ font-size: 2em;
 `
 
 
-function Products({handleOpenModal}) {
+function Products({handleOpenModal, products}) {
 
     return (
         <>

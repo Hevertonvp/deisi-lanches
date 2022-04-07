@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
 import ProductModal from "./components/product/ProductModal";
+import { products } from "../src/data/mockProducts";
 import { useState } from "react";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <ProductModal
           modalIsOpen={modalIsOpen}
           handleCloseModal={handleModal}
+          products={products}
         />
         <NavBar />
         <Routes>
@@ -44,6 +46,7 @@ function App() {
               <Products
                 modalIsOpen={modalIsOpen}
                 handleOpenModal={handleModal}
+                products={products}
               />
             }
           />

@@ -1,39 +1,58 @@
 import styled from 'styled-components'
+import { IoClose } from 'react-icons/io5'
+import { IconContext } from 'react-icons/lib';
 
 
 
 
-
-const StyledProductModal = styled.div`
-
-background: white;
-width: 80%;
-height: 80%;
-
-`
 const StyledModalContainer = styled.div`
 width: 100vw;
 height: 100vh;
-background: rgba(0, 0, 0, .6);    /*  40% opaque green */ 
+background: rgba(0, 0, 0, .8);   
 position: fixed;
 display: flex;
 justify-content: center;
 align-items: center;
 visibility: ${({ modalIsOpen }) => modalIsOpen ? 'visible' : 'hidden'};
-
 z-index: 2;
 `
 
 
 
 
-function ProductModal({ modalIsOpen, handleCloseModal }) {
+const StyledProductModal = styled.div`
+
+background: lightgrey;
+width: 80%;
+height: 80%;
+display: flex;
+svg{
+margin-left: auto;
+cursor: pointer;
+}
+`
+
+const ProductDetails = styled.div`
+
+background: black;
+width: 70%;
+height:70%
+`
+
+
+
+function ProductModal({ modalIsOpen }) {
     return (
-        <StyledModalContainer modalIsOpen={modalIsOpen}>
-            <StyledProductModal modalIsOpen={modalIsOpen} >
-                <button onClick={handleCloseModal}>Close</button>
-            </StyledProductModal>
-        </StyledModalContainer>
+        <IconContext.Provider value={{ size: '40px', color: 'red' }}>
+            <StyledModalContainer modalIsOpen={modalIsOpen}>
+                <StyledProductModal modalIsOpen={modalIsOpen} >
+                    < ProductDetails>
+                        
+
+                    </ProductDetails>
+                </StyledProductModal>
+            </StyledModalContainer>
+        </IconContext.Provider>
     )
 }
 
