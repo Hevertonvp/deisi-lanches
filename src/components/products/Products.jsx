@@ -30,30 +30,31 @@ color: #dd2e44;
 text-shadow: 2px 2px #ffd24c;
 text-align: center;
 font-size: 2em;
-margin-top: 2px;
-z-index: -1;
 `
 
 
-function Products() {
+function Products({handleOpenModal}) {
+
     return (
         <>
-            <StyledProductHeader>
-                <h1>Hamburguer</h1>
-            </StyledProductHeader>
-            <StyledProductsContainer>
-                {products.hamburgers.map((hamburger) => {
-                    return <ProductCard hamburger={hamburger} />
-                })}
-            </StyledProductsContainer >
-            <StyledProductHeader>
-                <h1>Hot Dogs</h1>
-            </StyledProductHeader>
-            <StyledProductsContainer>
-                {products.hotdogs.map((hamburger) => {
-                    return <ProductCard hamburger={hamburger} />
-                })}
-            </StyledProductsContainer>
+                <StyledProductHeader>
+                    <h1>Hamburguer</h1>
+                </StyledProductHeader>
+
+                <StyledProductsContainer>
+                    {products.hamburgers.map((product) => {
+                        return <ProductCard key={product.id} product={product} handleOpenModal={handleOpenModal} />
+                    })}
+                </StyledProductsContainer >
+                <StyledProductHeader>
+                    <h1>Hot Dogs</h1>
+                </StyledProductHeader>
+                <StyledProductsContainer>
+                    {products.hotdogs.map((product) => {
+                        return <ProductCard key={product.id} product={product}  handleOpenModal={handleOpenModal}/>
+                    })}
+                </StyledProductsContainer>
+ 
         </>
     )
 }

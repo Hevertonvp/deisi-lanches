@@ -13,7 +13,7 @@ height: 100px;
 weight: 100%;
 display: flex;
 justify-content: space-between;
-padding: 0 10% 0 10%;
+padding: 20px 10% 0 10%;
 border-top: 15px solid #dd2e44;
 border-bottom: 3px solid #dd2e44;
 `
@@ -33,21 +33,21 @@ svg{
 }
 `
 const StyledSocialbar = styled.div`
-weight:100%;
-height: 35px;
+width:100%;
+height: 40px;
 background: #1048f3;
 color: white;
 display: flex;
 align-items: center;
 justify-content: space-between;
 padding: 0 20px 0 20px;
-
+position: fixed;
 p{
     font-size:25px;
     margin-right:10px;
 }
+z-index: 2;
 `
-
 
 
 const StyledLink = styled(Link)`
@@ -58,32 +58,31 @@ text-decoration: none;
 font-size:40px;
 color: #ffcc4d;
 text-shadow: 2px 2px #ff0000;
-font-family: ${({theme})=> theme.fonts.navLink};
+font-family: ${({ theme }) => theme.fonts.navLink};
+
 `
 
 function NavBar() {
     return (
 
         <IconContext.Provider value={{ size: '30px' }}>
-            <StyledSocialbar>
-                <p>tel: (32) 99915-0802</p>
-                <SocialIcons />
-            </StyledSocialbar>
-            <LogoLink to='/'>
-                <Logo />
-            </LogoLink>
-            <StyledNavBar>
-                <StyledLink to={"/cardapio"}>
-                    Cardápio
-                </StyledLink>
-                <StyledLink to={"/products"}>
-                   Faça seu pedido!
-                </StyledLink>    
-
-            </StyledNavBar>
-
-
-
+            
+                <StyledSocialbar>
+                    <p>tel: (32) 99915-0802</p>
+                    <SocialIcons />
+                </StyledSocialbar>
+                <LogoLink to='/'>
+                    <Logo />
+                </LogoLink>
+                <StyledNavBar>
+                    <StyledLink to={"/cardapio"}>
+                        Cardápio
+                    </StyledLink>
+                    <StyledLink to={"/products"}>
+                        Faça seu pedido!
+                    </StyledLink>
+                </StyledNavBar>
+         
         </IconContext.Provider>
 
     )

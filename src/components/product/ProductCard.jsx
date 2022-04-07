@@ -1,16 +1,18 @@
-import React from 'react'
+
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 import { MdOutlineAddShoppingCart } from 'react-icons/md'
 import { IconContext } from 'react-icons/lib';
 
 
-const StyledProductCard = styled.div`
+
+const StyledProductCard = styled(Link)`
 color: #ffcc4d;
 width: 21em;
 height: 25em;
 border-radius: 20px;
 display: flex;
+align-items: center;
 flex-direction: column;
 padding: 0.7em;
 
@@ -30,6 +32,7 @@ img{
     
     border: 1px ridge #dd2e44;
     border-radius: 10px 10px 0 0;
+    width: 20em;
     height: 12em;
 }
 `
@@ -47,26 +50,34 @@ const StyledAddProductContainer = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
-padding-top: 10px;
+width: 100%;
 font-size: 30px;
 background: #dd2e44;
-padding: 10px;
+span {
+ text-shadow: 2px 1px #2c090d;
+}
+
 border-radius:  0 0 10px 10px;
 `
 
-function ProductCard({ hamburger }) {
+function ProductCard({ product, handleOpenModal }) {
+
+
+
+
+
     return (
         <IconContext.Provider value={''}>
-            <StyledProductCard to={"#"}>
-                <h1>{hamburger.name}</h1>
-                <img src={hamburger.imgUrl} alt=""></img>
+            <StyledProductCard to={""} onClick={handleOpenModal}>    {/*ok, this is a prop-drilling and i'm aware about it. Context will be implemented soon ;)*/}
+                <h1>{product.name}</h1>
+                <img src={product.imgUrl} alt=""></img>
                 <StyledAddProductContainer>
                     <MdOutlineAddShoppingCart />
-                    Adicionar
+                    <span>Adicionar</span>
                 </StyledAddProductContainer>
-
             </StyledProductCard>
         </IconContext.Provider>
+
     )
 }
 
