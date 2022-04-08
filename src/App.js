@@ -7,6 +7,7 @@ import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
 import ProductModal from "./components/product/ProductModal";
 import { products } from "../src/data/mockProducts";
+import { ProductProvider } from "../src/context/productContext";
 import { useState } from "react";
 
 function App() {
@@ -31,27 +32,29 @@ function App() {
       <GlobalStyles />
 
       <Router>
-        <ProductModal
-          modalIsOpen={modalIsOpen}
-          handleCloseModal={handleModal}
-          products={products}
-        />
-        <NavBar />
-        <Routes>
-          <Route exact path="/" element={<DemoCarousel />} />
-          <Route
-            exact
-            path="/products"
-            element={
-              <Products
-                modalIsOpen={modalIsOpen}
-                handleOpenModal={handleModal}
-                products={products}
-              />
-            }
+        <ProductProvider>
+          <ProductModal
+            modalIsOpen={modalIsOpen}
+            handleCloseModal={handleModal}
+            products={products}
           />
-          <Route exact path="/cardapio" element={<Cardapio />} />
-        </Routes>
+          <NavBar />
+          <Routes>
+            <Route exact path="/" element={<DemoCarousel />} />
+            <Route
+              exact
+              path="/products"
+              element={
+                <Products
+                  modalIsOpen={modalIsOpen}
+                  handleOpenModal={handleModal}
+                  products={products}
+                />
+              }
+            />
+            <Route exact path="/cardapio" element={<Cardapio />} />
+          </Routes>
+        </ProductProvider>
       </Router>
     </ThemeProvider>
   );
