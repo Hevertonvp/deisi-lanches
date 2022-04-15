@@ -1,0 +1,169 @@
+{
+  "product": {
+    "hamburgers": [
+      {
+        "id": "1",
+        "price": "10,90",
+        "name": "X-frango",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger.png"
+      },
+      {
+        "id": "2",
+        "price": "10,90",
+        "name": "X-bacon",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "ingredients": ["batata", "cebola", "queijo", "bacon", "tomate"],
+        "imgUrl": "/images/po-hamburger-2.jpg"
+      },
+      {
+        "id": "3",
+        "price": "10,90",
+        "name": "X-tudo",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger-3.jpg"
+      },
+      {
+        "id": "4",
+        "price": "10,90",
+        "name": "X-tudão",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger-4.jpg"
+      },
+      {
+        "id": "5",
+        "price": "10,90",
+        "name": "X-egg",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger-5.jpg"
+      },
+      {
+        "id": "6",
+        "price": "10,90",
+        "name": "X-vegetariano",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger-3.jpg"
+      },
+      {
+        "name": "hamburguer",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+
+        "price": "10,90",
+        "id": "7",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/po-hamburger.png"
+      }
+    ],
+    "hotdogs": [
+      {
+        "name": "Duas salsichas",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+
+        "price": "10,90",
+        "id": "8",
+        "ingredients": ["batata", "cebola", "queijo", "frango", "tomate"],
+        "imgUrl": "/images/cachorro1.jpg"
+      },
+      {
+        "name": "Frango",
+        "price": "10,90",
+        "id": "9",
+        "ingredients": ["batata", "cebola", "queijo", "bacon", "tomate"],
+        "imgUrl": "/images/cachorro2.jpg"
+      },
+      {
+        "name": "grande",
+        "price": "4,90",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "id": "10",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/cachorro3.jpg"
+      },
+      {
+        "name": "maior ainda",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+
+        "price": "7,90",
+        "id": "11",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/cachorro4.jpg"
+      },
+      {
+        "name": "bem maior",
+        "price": "7,90",
+        "id": "12",
+        "ingredients": [
+          "batata",
+          "cebola",
+          "queijo",
+          "bacon",
+          "tomate",
+          "frango"
+        ],
+        "imgUrl": "/images/cachorro2.jpg"
+      }
+    ]
+  }
+}

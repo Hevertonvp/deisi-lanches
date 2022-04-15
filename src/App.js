@@ -5,9 +5,9 @@ import DemoCarousel from "./components/carousel/Carousel";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
-import ProductModal from "./components/product/ProductModal";
-import { products } from "../src/data/mockProducts";
-import { ProductProvider } from "../src/context/productContext";
+import OrderModal from "./components/orderModal/OrderModal";
+import { ProductProvider } from "./context/ProductContext";
+import { OrderProvider } from "./context/OrderContext";
 import { useState } from "react";
 
 function App() {
@@ -21,39 +21,29 @@ function App() {
     },
   };
 
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function handleModal() {
-    setIsOpen(!modalIsOpen);
-  }
-
+ 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-
       <Router>
         <ProductProvider>
-          <ProductModal
-            modalIsOpen={modalIsOpen}
-            handleCloseModal={handleModal}
-            products={products}
-          />
-          <NavBar />
-          <Routes>
-            <Route exact path="/" element={<DemoCarousel />} />
-            <Route
-              exact
-              path="/products"
-              element={
-                <Products
-                  modalIsOpen={modalIsOpen}
-                  handleOpenModal={handleModal}
-                  products={products}
-                />
-              }
-            />
-            <Route exact path="/cardapio" element={<Cardapio />} />
-          </Routes>
+          <OrderProvider>
+            <OrderModal/>
+            <NavBar />
+            <Routes>
+              <Route exact path="/" element={<DemoCarousel />} />
+              <Route
+                exact
+                path="/products"
+                element={
+                  <Products
+
+                  />
+                }
+              />
+              <Route exact path="/cardapio" element={<Cardapio />} />
+            </Routes>
+          </OrderProvider>
         </ProductProvider>
       </Router>
     </ThemeProvider>
