@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 
 const StyledNavBar = styled.div`
 background: #951c04;   
-color: black;
 height: 100px;
 weight: 100%;
 display: flex;
@@ -56,9 +55,9 @@ align-items: center;
 cursor: pointer;
 text-decoration: none;
 font-size:40px;
-color: #ffcc4d;
-text-shadow: 2px 2px #ff0000;
-font-family: ${({ theme }) => theme.fonts.navLink};
+color: white;
+text-shadow: 2px 2px black;
+font-family: ${({ theme }) => theme.fonts.default};
 
 `
 

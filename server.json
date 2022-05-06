@@ -5,14 +5,38 @@
         "id": "1",
         "price": "10,90",
         "name": "X-frango",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "bife de frango",
+            "isExtra": true,
+            "price": "2,00"
+          }
         ],
         "imgUrl": "/images/po-hamburger.png"
       },
@@ -20,37 +44,131 @@
         "id": "2",
         "price": "10,90",
         "name": "X-bacon",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
-        "ingredients": ["batata", "cebola", "queijo", "bacon", "tomate"],
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+        "ingredients": [
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bife de carne",
+            "isExtra": true,
+            "price": "2,40"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bacon",
+            "isExtra": true,
+            "price": "2,90"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          }
+        ],
         "imgUrl": "/images/po-hamburger-2.jpg"
       },
       {
         "id": "3",
         "price": "10,90",
-        "name": "X-tudo",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "name": "hamburger",
+        "description": " leo sem vestibulum dui, eu molestie diam felis eu tortor.",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bife de carne",
+            "isExtra": true,
+            "price": "2,40"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          }
         ],
         "imgUrl": "/images/po-hamburger-3.jpg"
       },
       {
         "id": "4",
-        "price": "10,90",
+        "price": "17,90",
         "name": "X-tudão",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "description": "lor. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bife de carne",
+            "isExtra": true,
+            "price": "2,40"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bacon",
+            "isExtra": true,
+            "price": "2,90"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "bife de frango",
+            "isExtra": true,
+            "price": "2,00"
+          },
+          {
+            "name": "ovo",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/po-hamburger-4.jpg"
       },
@@ -58,14 +176,42 @@
         "id": "5",
         "price": "10,90",
         "name": "X-egg",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "description": "lor.euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bife de carne",
+            "isExtra": true,
+            "price": "2,40"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "ovo",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/po-hamburger-5.jpg"
       },
@@ -73,31 +219,88 @@
         "id": "6",
         "price": "10,90",
         "name": "X-vegetariano",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
-
+        "description": "dolor. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/po-hamburger-3.jpg"
       },
       {
-        "name": "hamburguer",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "name": "x-tudo",
+        "description": "dolor. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
 
         "price": "10,90",
         "id": "7",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bife de carne",
+            "isExtra": true,
+            "price": "2,40"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "salada de alface e tomate",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "bacon",
+            "isExtra": true,
+            "price": "2,90"
+          },
+          {
+            "name": "mussarela",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "bife de frango",
+            "isExtra": true,
+            "price": "2,00"
+          },
+          {
+            "name": "ovo",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/po-hamburger.png"
       }
@@ -105,48 +308,151 @@
     "hotdogs": [
       {
         "name": "Duas salsichas",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
-
+        "description": "lor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. ",
         "price": "10,90",
         "id": "8",
-        "ingredients": ["batata", "cebola", "queijo", "frango", "tomate"],
+        "ingredients": [
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "queijo parmesão",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "ovo de codorna",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "salsicha",
+            "isExtra": true,
+            "price": "1,90"
+          }
+        ],
         "imgUrl": "/images/cachorro1.jpg"
       },
       {
         "name": "Frango",
         "price": "10,90",
         "id": "9",
-        "ingredients": ["batata", "cebola", "queijo", "bacon", "tomate"],
+        "ingredients": [
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "queijo parmesão",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "frango desfiado",
+            "isExtra": true,
+            "price": "2,00"
+          }
+        ],
         "imgUrl": "/images/cachorro2.jpg"
       },
       {
         "name": "grande",
         "price": "4,90",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
+        "description": "dolor. Maecenas malesuada dapibus turpis id mattis",
         "id": "10",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "queijo parmesão",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "salsicha",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "frango desfiado",
+            "isExtra": true,
+            "price": "2,00"
+          }
         ],
         "imgUrl": "/images/cachorro3.jpg"
       },
       {
         "name": "maior ainda",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in nibh id est dignissim rutrum a id dolor. Maecenas malesuada dapibus turpis id mattis. Donec euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
-
+        "description": "olor. Maecenas malesuada dapibus turpis id mattis",
         "price": "7,90",
         "id": "11",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão grande",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "queijo parmesão",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "frango desfiado",
+            "isExtra": true,
+            "price": "2,00"
+          },
+          {
+            "name": "salsicha",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/cachorro4.jpg"
       },
@@ -155,12 +461,36 @@
         "price": "7,90",
         "id": "12",
         "ingredients": [
-          "batata",
-          "cebola",
-          "queijo",
-          "bacon",
-          "tomate",
-          "frango"
+          {
+            "name": "pão grande",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "milho",
+            "isExtra": false,
+            "price": "0"
+          },
+          {
+            "name": "batata palha",
+            "isExtra": true,
+            "price": "2,20"
+          },
+          {
+            "name": "queijo parmesão",
+            "isExtra": true,
+            "price": "1,90"
+          },
+          {
+            "name": "frango desfiado",
+            "isExtra": true,
+            "price": "2,00"
+          },
+          {
+            "name": "salsicha",
+            "isExtra": true,
+            "price": "1,90"
+          }
         ],
         "imgUrl": "/images/cachorro2.jpg"
       }

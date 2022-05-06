@@ -4,12 +4,15 @@ import { Link } from 'react-router-dom';
 import { MdOutlineAddShoppingCart } from 'react-icons/md'
 import { IconContext } from 'react-icons/lib';
 import { useContext } from 'react';
-import { OrderContext } from '../../context/OrderContext'
+import  ProductContext  from '../../context/ProductContext'
 
 
 
 const StyledProductCard = styled(Link)`
-color: #ffcc4d;
+color: white;
+text-shadow: 4px 2px black;
+font-family: ${({ theme }) => theme.fonts.default};
+text-decoration: none;
 width: 21em;
 height: 25em;
 border-radius: 20px;
@@ -24,7 +27,7 @@ background-image:
 ;
 ;
 
-box-shadow: inset 1em 30px #41494d;
+box-shadow: inset 1em 30px #300057;
 h1{ 
     font-size: 40px;
     text-align: center;
@@ -57,12 +60,12 @@ border-radius:  0 0 10px 10px;
 function ProductCard({ product }) {
 
 
-    const { addOrder } = useContext(OrderContext)
+    const { addProduct } = useContext(ProductContext)
 
 
     return (
         <IconContext.Provider value={''}>
-            <StyledProductCard to={""} onClick={() => addOrder(product)}>
+            <StyledProductCard to={""} onClick={() => addProduct(product)}>
                 <h1>{product.name}</h1>
                 <img src={product.imgUrl} alt=""></img>
                 <StyledAddProductContainer>

@@ -13,34 +13,26 @@ import { useState } from "react";
 function App() {
   const theme = {
     colors: {
-      body: "#99b86a",
+      body: "#7868a3",
     },
     fonts: {
-      navLink: "'Oleo Script', cursive",
+      default: "'Francois One', sans-serif",
+      infoText: "'Archivo', sans-serif",
       colors: {},
     },
   };
 
- 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Router>
         <ProductProvider>
           <OrderProvider>
-            <OrderModal/>
+            <OrderModal />
             <NavBar />
             <Routes>
               <Route exact path="/" element={<DemoCarousel />} />
-              <Route
-                exact
-                path="/products"
-                element={
-                  <Products
-
-                  />
-                }
-              />
+              <Route exact path="/products" element={<Products />} />
               <Route exact path="/cardapio" element={<Cardapio />} />
             </Routes>
           </OrderProvider>
