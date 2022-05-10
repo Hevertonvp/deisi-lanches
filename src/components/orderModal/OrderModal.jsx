@@ -40,7 +40,7 @@ width: 180px;
 margin: 20px;
 border-radius: 5px;
 border: solid 1px grey;
-}
+
 `
 
 const StyledHeader = styled.div`
@@ -137,13 +137,21 @@ function ProductModal() {
     const newOrder = useContext(OrderContext)
     const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
     const { product: { name, ingredients, description, imgUrl, price } } = newProduct;
-    const { order, setOrder } = newOrder
-    //State
-    const [orderValue, setOrderValue] = useState(price)
-    const [checkedState, setCheckedState] = useState(new Array(extraIngredients.length).fill(false));
+    const { order, setOrder } = newOrder;
+
+    //
+
+    const [checkedState, setCheckedState] = useState([]);
+    const [orderValue, setOrderValue] = useState("");
 
 
-    console.log(checkedState)
+    useEffect(() => {
+        setCheckedState(new Array(extraIngredients.length).fill(false))
+        // this method is throwing a warning rendering the first time: 'it changes a uncontrolled 
+        // state to controled because of the fill method, i guess. Is there a better way to do it?'
+        setOrderValue(price)
+    }, [extraIngredients, price])
+
 
     function cleanOrder() {
         setCheckedState(new Array(extraIngredients.length).fill(false))
@@ -152,12 +160,26 @@ function ProductModal() {
     }
 
 
-    function handleOnChange(position) {
-        const updatedState = checkedState.map((item, index) => index === position ? !item : item
 
+    function handleOnChange(position) {
+
+
+        const updatedState = checkedState.map((item, index) =>
+            index === position ? !item : item
         );
+
         setCheckedState(updatedState);
 
+        const totalPrice = updatedState.reduce((previousValue, currentValue, index) => {
+            const floatPrice = parseFloat(extraIngredients[index].price.replace(',', '.'));
+            const floatValue = parseFloat(previousValue);
+            if (currentValue) {
+                return floatValue + floatPrice
+            }
+            return floatValue
+        }, parseFloat(price.replace(',', '.')));
+
+        setOrderValue(totalPrice.toFixed(2).replace('.', ','));
     }
 
 
@@ -182,15 +204,11 @@ function ProductModal() {
 
                         <p>{isModalOpen ? description : ''}</p>
 
-
                         <h2>Adicionais:</h2>
                         <StyledBody>
 
                             {extraIngredients?.map(({ name, price }, index) => {
-
                                 const str = name;
-                                // var floatIngredientPrice = parseFloat(price).toFixed(2)
-                                // var floatPrice = parseFloat(orderValue).toFixed(2)
 
                                 return (
                                     <ExtraIngredients key={index}>
@@ -203,7 +221,6 @@ function ProductModal() {
                                             checked={checkedState[index]}
                                             onChange={() => handleOnChange(index)}
                                         />
-
                                     </ExtraIngredients>)
                             })}
 
@@ -211,7 +228,7 @@ function ProductModal() {
 
                         <Footer>
                             <div>
-                                <h2> {orderValue}</h2>
+                                <h2>R$ {orderValue}</h2>
                                 <Button>Adicionar ao carrinho</Button>
                             </div>
                         </Footer>

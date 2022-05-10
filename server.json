@@ -3,7 +3,7 @@
     "hamburgers": [
       {
         "id": "1",
-        "price": "10,90",
+        "price": "10,79",
         "name": "X-frango",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
         "ingredients": [
@@ -42,7 +42,7 @@
       },
       {
         "id": "2",
-        "price": "10,90",
+        "price": "10,99",
         "name": "X-bacon",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
         "ingredients": [
@@ -174,7 +174,7 @@
       },
       {
         "id": "5",
-        "price": "10,90",
+        "price": "12,59",
         "name": "X-egg",
         "description": "lor.euismod et ipsum ut ultrices. Aliquam tristique iaculis justo, a lobortis sem luctus at. In egestas commodo efficitur. Maecenas gravida neque sit amet libero aliquam egestas. Phasellus viverra vitae dui eget condimentum. Sed vitae rutrum mauris. Nullam mollis, augue id facilisis interdum, leo sem vestibulum dui, eu molestie diam felis eu tortor.",
         "ingredients": [
