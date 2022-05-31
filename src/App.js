@@ -7,13 +7,14 @@ import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
 import OrderModal from "./components/orderModal/OrderModal";
 import { ProductProvider } from "./context/ProductContext";
-import { OrderProvider } from "./context/OrderContext";
+import { OrderProvider } from "./context/CartContext";
 import { useState } from "react";
+import Cart from "./components/cart/Cart";
 
 function App() {
   const theme = {
     colors: {
-      body: "#7868a3",
+      body:"rgba(4, 11, 43, .7)"
     },
     fonts: {
       default: "'Francois One', sans-serif",
@@ -34,6 +35,7 @@ function App() {
               <Route exact path="/" element={<DemoCarousel />} />
               <Route exact path="/products" element={<Products />} />
               <Route exact path="/cardapio" element={<Cardapio />} />
+              <Route exact path="/cart" element={<Cart />} />
             </Routes>
           </OrderProvider>
         </ProductProvider>

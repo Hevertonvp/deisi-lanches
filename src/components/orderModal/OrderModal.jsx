@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 import { IoClose } from 'react-icons/io5'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { IconContext } from 'react-icons/lib';
 import { useContext, useEffect, useState } from 'react'
-import OrderContext from '../../context/OrderContext'
+import CartContext from '../../context/CartContext'
 import ProductContext from '../../context/ProductContext'
 
 
@@ -17,10 +19,8 @@ display: flex;
 justify-content: center;
 align-items: center;
 visibility: ${({ isModalOpen }) => isModalOpen ? 'visible' : 'hidden'};
-z-index: 120;
+z-index: 1;
 `
-
-
 const StyledProductModal = styled.div`
 display: flex;
 padding: 30px;
@@ -32,7 +32,6 @@ cursor: pointer;
 }
 overflow: scroll;
 `
-
 const Image = styled.img`
 
 height: 150px;
@@ -42,7 +41,6 @@ border-radius: 5px;
 border: solid 1px grey;
 
 `
-
 const StyledHeader = styled.div`
 display: flex;
 border: 1px solid;
@@ -70,19 +68,17 @@ span{
 `
 const Button = styled.button`
 background: #173828;
+cursor: pointer;
 color: white;
 border: none;
 border-radius: 5px;
 width: 20em;
 height: 3em;
 `
-
 const ExtraIngredients = styled.div`
 display: column;
 
 `
-
-
 const StyledBody = styled.div`
 
 padding: 10px;
@@ -107,7 +103,6 @@ div{
 }
 
 `
-
 const ProductDetails = styled.div`
 width: 98%;
 height:70%;
@@ -118,7 +113,6 @@ h2{
 }
 
 `
-
 const Footer = styled.div`
 display: flex;
 justify-content: center;
@@ -134,14 +128,12 @@ function ProductModal() {
 
     //context
     const newProduct = useContext(ProductContext)
-    const newOrder = useContext(OrderContext)
+    const newCart = useContext(CartContext)
     const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
-    const { product: { name, ingredients, description, imgUrl, price } } = newProduct;
-    const { order, setOrder } = newOrder;
+    const { product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
+    const { setOrder, order, checkedState, setCheckedState, selectedIngredients, setSelectedIngredients } = newCart;
+    //state
 
-    //
-
-    const [checkedState, setCheckedState] = useState([]);
     const [orderValue, setOrderValue] = useState("");
 
 
@@ -150,45 +142,96 @@ function ProductModal() {
         // this method is throwing a warning rendering the first time: 'it changes a uncontrolled 
         // state to controled because of the fill method, i guess. Is there a better way to do it?'
         setOrderValue(price)
-    }, [extraIngredients, price])
+    }, [extraIngredients, price, setCheckedState])
 
 
-    function cleanOrder() {
+    function toastMessage(message) {
+        toast.success(message, {
+            draggable: false,
+            position: toast.POSITION.TOP_LEFT,
+            autoClose: 1500
+        })
+
+    }
+
+
+
+    function addOrder() {
+
+       
+
+
+        toastMessage('Adicionado com sucesso!')
+
+        //passa o checked e tenta por lá
+
+        const exist = order.find(x => x.id === id)
+
+       
+
+
+        if (exist) {
+            setOrder(
+                order.map((item) =>
+                    item.id === id ? { ...exist, quantity: exist.quantity + 1 } : item
+                )
+            )
+        }
+        else {
+            setOrder([...order, {
+                id: id,
+                quantity: 1,
+                name: name,
+                price: orderValue,
+                extraIngredients,
+                selectedIngredients
+            }])
+        }
+    }
+
+    function cleanChecked() {
         setCheckedState(new Array(extraIngredients.length).fill(false))
-        setOrder([])
         setModalOpen(false)
     }
 
 
 
-    function handleOnChange(position) {
 
+    function handleOnChange(position) {
 
         const updatedState = checkedState.map((item, index) =>
             index === position ? !item : item
+
         );
+
 
         setCheckedState(updatedState);
 
         const totalPrice = updatedState.reduce((previousValue, currentValue, index) => {
-            const floatPrice = parseFloat(extraIngredients[index].price.replace(',', '.'));
-            const floatValue = parseFloat(previousValue);
+            const floatIngredientsPrice = parseFloat(extraIngredients[index].price.replace(',', '.'));
+            const floatPreviousValue = parseFloat(previousValue);
             if (currentValue) {
-                return floatValue + floatPrice
+                return floatPreviousValue + floatIngredientsPrice
             }
-            return floatValue
+            return floatPreviousValue
         }, parseFloat(price.replace(',', '.')));
 
         setOrderValue(totalPrice.toFixed(2).replace('.', ','));
+
     }
 
 
     return (
+
         <IconContext.Provider value={{ size: '50px', color: '#dd2e44' }}>
+            <ToastContainer />
+
             <StyledModalContainer isModalOpen={isModalOpen}>
                 <StyledProductModal >
                     <ProductDetails>
+
                         <StyledHeader>
+
                             <Image src={isModalOpen ? imgUrl : ''} alt="" />
                             <div>
                                 <span>
@@ -205,12 +248,14 @@ function ProductModal() {
                         <p>{isModalOpen ? description : ''}</p>
 
                         <h2>Adicionais:</h2>
+
                         <StyledBody>
 
                             {extraIngredients?.map(({ name, price }, index) => {
                                 const str = name;
 
                                 return (
+
                                     <ExtraIngredients key={index}>
                                         <h4>{`${str[0].toUpperCase() + str.substr(1)} (R$ ${price})`}</h4>
                                         <input
@@ -227,13 +272,15 @@ function ProductModal() {
                         </StyledBody>
 
                         <Footer>
+
                             <div>
+
                                 <h2>R$ {orderValue}</h2>
-                                <Button>Adicionar ao carrinho</Button>
+                                <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
                             </div>
                         </Footer>
                     </ProductDetails>
-                    <IoClose onClick={() => cleanOrder()} /> {/*  change it to a function that cleans the order state and close de modal */}
+                    <IoClose onClick={cleanChecked} /> {/*  change it to a function that cleans the order state and close de modal */}
                 </StyledProductModal>
             </StyledModalContainer>
         </IconContext.Provider >

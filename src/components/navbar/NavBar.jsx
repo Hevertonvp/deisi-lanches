@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import SocialIcons from '../socialIcons/SocialIcons'
 import Logo from '../logo/Logo'
+import CartIcon from '../../cartIcon/CartIcon';
 import { IconContext } from 'react-icons/lib';
 import { Link } from 'react-router-dom';
 
 
 const StyledNavBar = styled.div`
 background: #951c04;   
+margin-top: 30px;
 height: 100px;
 weight: 100%;
 display: flex;
@@ -15,6 +16,7 @@ justify-content: space-between;
 padding: 20px 10% 0 10%;
 border-top: 15px solid #dd2e44;
 border-bottom: 3px solid #dd2e44;
+
 `
 const LogoLink = styled(Link)`
 weight:100%;
@@ -32,9 +34,10 @@ svg{
 }
 `
 const StyledSocialbar = styled.div`
+
 width:100%;
-height: 40px;
-background: #1048f3;
+height: 60px;
+background:#080338;
 color: white;
 display: flex;
 align-items: center;
@@ -58,30 +61,31 @@ font-size:40px;
 color: white;
 text-shadow: 2px 2px black;
 font-family: ${({ theme }) => theme.fonts.default};
-
+@media (max-width: 768px){
+    font-size: 1.5em;
+}
 `
 
 function NavBar() {
     return (
 
-        <IconContext.Provider value={{ size: '30px' }}>
-            
-                <StyledSocialbar>
-                    <p>tel: (32) 99915-0802</p>
-                    <SocialIcons />
-                </StyledSocialbar>
-                <LogoLink to='/'>
-                    <Logo />
-                </LogoLink>
-                <StyledNavBar>
-                    <StyledLink to={"/cardapio"}>
-                        Cardápio
-                    </StyledLink>
-                    <StyledLink to={"/products"}>
-                        Faça seu pedido!
-                    </StyledLink>
-                </StyledNavBar>
-         
+        <IconContext.Provider value={{ size: '50px' }}>
+            <StyledSocialbar>
+                <p>tel: (32) 99915-0802</p>
+                <CartIcon />
+            </StyledSocialbar>
+            <LogoLink to='/'>
+                {/* <Logo /> */}
+            </LogoLink>
+            <StyledNavBar>
+                <StyledLink to={"/cardapio"}>
+                    Cardápio
+                </StyledLink>
+                <StyledLink to={"/products"}>
+                    Faça seu pedido!
+                </StyledLink>
+            </StyledNavBar>
+
         </IconContext.Provider>
 
     )

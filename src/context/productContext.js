@@ -28,10 +28,11 @@ export function ProductProvider({ children }) {
         product,
         addProduct,
         extraIngredients,
+        setExtraIngredients,
         isModalOpen,
         setModalOpen,
       }}
-    >
+    >    
       {children}
     </ProductContext.Provider>
   );
