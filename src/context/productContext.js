@@ -16,8 +16,13 @@ export function ProductProvider({ children }) {
   function addProduct(product) {
     setProduct(product);
     setModalOpen(!isModalOpen);
+    const ingredients = product.ingredients.filter(
+      (ingredient) => ingredient.isExtra === true
+    );
     setExtraIngredients(
-      product.ingredients.filter((ingredient) => ingredient.isExtra === true)
+      ingredients.map((ingredient) => {
+        return { ...ingredient, isSelected: false };   // selecting items from the cart list
+      })
     );
   }
 
@@ -32,7 +37,7 @@ export function ProductProvider({ children }) {
         isModalOpen,
         setModalOpen,
       }}
-    >    
+    >
       {children}
     </ProductContext.Provider>
   );

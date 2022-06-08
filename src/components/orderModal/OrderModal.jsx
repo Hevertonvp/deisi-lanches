@@ -6,7 +6,7 @@ import { IconContext } from 'react-icons/lib';
 import { useContext, useEffect, useState } from 'react'
 import CartContext from '../../context/CartContext'
 import ProductContext from '../../context/ProductContext'
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -129,18 +129,17 @@ function ProductModal() {
     //context
     const newProduct = useContext(ProductContext)
     const newCart = useContext(CartContext)
-    const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
+    const { isModalOpen, extraIngredients, setExtraIngredients, setModalOpen } = newProduct;
     const { product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
-    const { setOrder, order, checkedState, setCheckedState, selectedIngredients, setSelectedIngredients } = newCart;
+    const { setOrder, order, checkedState, setCheckedState, setSelectedIngredients, selectedIngredients } = newCart;
     //state
-
     const [orderValue, setOrderValue] = useState("");
 
 
     useEffect(() => {
         setCheckedState(new Array(extraIngredients.length).fill(false))
         // this method is throwing a warning rendering the first time: 'it changes a uncontrolled 
-        // state to controled because of the fill method, i guess. Is there a better way to do it?'
+        // state to controled because of the 'fill method'. Must think a better way to do this'
         setOrderValue(price)
     }, [extraIngredients, price, setCheckedState])
 
@@ -151,24 +150,19 @@ function ProductModal() {
             position: toast.POSITION.TOP_LEFT,
             autoClose: 1500
         })
-
     }
-
-
 
     function addOrder() {
 
-       
+        checkedState.map((state, i) => {
+            if (state) {
+                return extraIngredients[i].isSelected = true
+            }
 
-
+        })
         toastMessage('Adicionado com sucesso!')
 
-        //passa o checked e tenta por lá
-
         const exist = order.find(x => x.id === id)
-
-       
-
 
         if (exist) {
             setOrder(
@@ -179,12 +173,11 @@ function ProductModal() {
         }
         else {
             setOrder([...order, {
-                id: id,
+                id: uuidv4(),
                 quantity: 1,
                 name: name,
                 price: orderValue,
                 extraIngredients,
-                selectedIngredients
             }])
         }
     }
@@ -194,17 +187,12 @@ function ProductModal() {
         setModalOpen(false)
     }
 
-
-
-
     function handleOnChange(position) {
 
         const updatedState = checkedState.map((item, index) =>
             index === position ? !item : item
 
         );
-
-
         setCheckedState(updatedState);
 
         const totalPrice = updatedState.reduce((previousValue, currentValue, index) => {
@@ -219,8 +207,6 @@ function ProductModal() {
         setOrderValue(totalPrice.toFixed(2).replace('.', ','));
 
     }
-
-
     return (
 
         <IconContext.Provider value={{ size: '50px', color: '#dd2e44' }}>

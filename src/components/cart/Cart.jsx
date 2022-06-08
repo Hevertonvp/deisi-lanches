@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import CartContext from '../../context/CartContext'
-import { GoDiffAdded, GoDiffRemoved } from 'react-icons/go'
+import { MdAdd, MdRemove } from 'react-icons/md'
+import { FaHamburger, FaHotdog } from 'react-icons/fa'
 import { TiInputChecked } from 'react-icons/ti'
 import { useContext, useState, useEffect } from 'react'
 import ProductContext from '../../context/ProductContext'
@@ -9,7 +10,8 @@ import ProductContext from '../../context/ProductContext'
 const Header = styled.div`
 font-size: 1.5em;
 margin: 1em;
-text-shadow: 1px 1px #035220;
+color: #c4c4c2;
+text-shadow: 1px 1px #a3223c;
 @media (max-width: 768px){
     font-size: 1em;
 }
@@ -17,10 +19,9 @@ text-shadow: 1px 1px #035220;
 
 const OrdersWrapper = styled.div`
 padding: 2em;
-background-image: url("images/23657229.jpg");
-background: rgba(0, 0, 0, .8);
+/* background-image: url("images/23657229.jpg"); */
+background: #27292e;
 min-height: 100vh;
-color: white;
 font-family: ${({ theme }) => theme.fonts.default};
 display: flex;
 flex-direction: column;
@@ -28,14 +29,15 @@ align-items: center;
 `
 const Card = styled.div`
 width: 80vw;
-margin: 0.2em;
+margin: 0.8em;
 display: grid;
 grid-template-columns: 5fr 2fr;
-background: rgba(0, 0, 0, .7);
+background: rgba(0, 0, 0, .4);
+box-shadow: 0 0 4px black;
 border-radius: 5px;
 
 `
-const OrderContainer = styled.div`
+const CardContainer = styled.div`
 border-radius: 3px;
 min-width: 100%;
 background: rgba(0, 0, 0, .9);
@@ -46,21 +48,27 @@ padding: 2em;
 @media (max-width: 768px){
   padding: 1em;
 }
-
-h5{
- margin-left: 20px;
- color: #ebe8ea;
- margin: 8px;
+p{
+    color: lightgrey;
 }
 `
 
-const CardHeader = styled.div`
+const OrderHeader = styled.div`
 display: flex;
+color: #a3223c;
+h2{
+color: white;
+text-shadow: 1px 1px grey;
+}
 flex-direction: column;
-color: #a12039;
 h1{
-    margin-left: 15px;
-    color: white;
+    margin-left: 20px;
+    /* text-shadow: 1px 1px 0 #edb2be; */
+    font-size: 45px;
+}
+svg{
+    margin: 0 0 -4px 6em;
+    color: #d4ac3f;
 }
 @media (max-width: 768px){
   font-size: 18px;
@@ -68,43 +76,68 @@ h1{
 }
 
 `
-const ExtrasContainer = styled.div`
+const SelectedIngredients = styled.div`
+color: lightgrey;
 background: #1c1c16;
 padding: 10px;
-border-radius: 10px;
-box-shadow: 0 0 5px #1c1c16;
+border-radius: 3px;
 display: flex;
-color: white;
 flex-direction: column;
+margin-bottom: 5px;
 h4{
     margin: 5px;
-    color: #649e6d;
+    font-weight: 50;
 }
 @media (max-width: 768px){
   font-size: 15px;
 }
 svg{
-    color: #b00516;
-    margin-left: 5px;
+    font-size: 30px;
+    margin: 0 0 -8px 10px;
+    color: #a3223c;
+    cursor: pointer;
 }
 `
-const Body = styled.div`
+const UnselectedIngredients = styled.div`
+background: #1c1c16;
+color: lightgrey;
+padding: 10px;
+border-radius: 10px;
+/* box-shadow: 0 0 5px #1c1c16; */
 display: flex;
+flex-direction: column;
+h4{
+    margin: 5px;
+    font-weight: 50;
+}
+@media (max-width: 768px){
+  font-size: 15px;
+}
+svg{
+    margin: 0 0 -8px 5px;
+    color: #00b81c;
+    font-size: 30px;
+    cursor: pointer;
+}
+`
+
+const OrderBody = styled.div`
+display: flex;
+background: rgba(0, 0, 0, .5);
 flex-direction: column;
 justify-content: center;
 text-align: center;
-
-h1{
-    font-size: 2em;
-    margin-right: 10px;
-    background: rgba(252, 186, 3, .4);
-    border-radius: 10px;
-    color: black;
-}
+;
+color: #5e5e5e;
+font-size: 1.4em;
 svg{
+color: #a3223c;
+font-size: 3em;
+margin: 0 10px 0 0;
+}
+h1{
+background: rgba(0, 0, 0, .7);
 font-size: 2em;
-color: #a4dbb9;
-margin: 10px 10px 0 0;
 }
 `
 
@@ -112,13 +145,33 @@ margin: 10px 10px 0 0;
 function Cart() {
 
 
-
+    //context
     const newCart = useContext(CartContext)
-    const { order } = newCart
+    const { order, setOrder } = newCart
 
 
+    // function addIngredient(orderId, position, uncheckedIngredients) {  // array : extraIngredients === false
+    //     if (orderId === order.id) {
+    //         uncheckedIngredients.map((item, i) => {
+    //             if (i === position) {
+    //                 return item.isSelected = !item.isSelected
+    //             }
+    //         })
+    //     }
+    //     setOrder([...order])
+    // }
+    // function addIngredient(orderId, position, uncheckedIngredients) {  // array : extraIngredients === false
+    //     if (orderId === order.id) {
+    //       const checked =  uncheckedIngredients.map((item, i) => {
+    //             if (i === position) {
+    //                 item.isSelected = true
+    //             }
+    //         })
+            
+    //     }
 
 
+    // }
 
     return (
         <OrdersWrapper>
@@ -126,37 +179,59 @@ function Cart() {
                 <h1>Confira seu pedido:</h1>
             </Header>
 
-            {order.map(({ extraIngredients, selectedIngredients, name, price }) => {
+            {order.map(({ name, price, extraIngredients, id }) => {
+
+                const selected = extraIngredients.filter((x) => x.isSelected === true)
+                const unSelected = extraIngredients.filter((x) => x.isSelected === false)
 
                 if (extraIngredients.length > 0) {
                     return (
                         <Card>
-                            <OrderContainer>
-                                <CardHeader>
-                                    <h2>{name}</h2>
-                                    <h1> R$: {price}</h1>
-                                </CardHeader>
-                                <ExtrasContainer>
-                                    <h3>Extras:</h3>
-                                    {extraIngredients.map((ingredient, index) => {    
-                                        
-                                        return (
-                                            <div>
-                                                <h4>{ingredient.name} - R${ingredient.price} <GoDiffRemoved /></h4>
-                                            </div>
-                                        )
-                                    }
-                                    )}
-                                    <p>adicionar items</p>
-                                </ExtrasContainer>
-                            </OrderContainer>
-                            <Body>
+                            <CardContainer>
+                                <OrderHeader>
+                                    <div><h1>{name}</h1> </div>
+                                </OrderHeader>
+                                {selected.length > 0 ?
+                                    <div>
+                                        <p>Items Extras Selecionados:</p>
+                                        <SelectedIngredients>
+                                            {
+                                                selected.map((item, index) => {
+                                                    return (
+                                                        <div>
+                                                            <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => { addIngredient(order.id, index, selected) }} /></h4>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </SelectedIngredients>
+                                    </div>
+                                    : ""}
+                                {unSelected.length > 0 ?
+                                    <div>
+                                        <p>Adicionar items:</p>
+                                        <UnselectedIngredients>
+                                            {
+                                                unSelected.map((item, index) => {
+                                                    return (
+                                                        <div>
+                                                            <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => { addIngredient(order.id, index, unSelected) }} /></h4>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </UnselectedIngredients>
+                                    </div>
+                                    : ""}
+
+                            </CardContainer>
+                            <OrderBody>
                                 <div>
-                                    <h1>{order.quantity}</h1>
-                                    <GoDiffAdded />
-                                    <GoDiffRemoved />
+                                    <h1>R$: {price}</h1>
+                                    <MdAdd color="#05fc2a" />
+                                    <MdRemove />
                                 </div>
-                            </Body>
+                            </OrderBody>
                         </Card>
                     )
                 }
@@ -164,19 +239,19 @@ function Cart() {
                     return (
                         <>
                             <Card>
-                                <OrderContainer>
-                                    <CardHeader>
+                                <CardContainer>
+                                    <OrderHeader>
                                         <h2>{order.name}</h2>
                                         <h1>R$: {order.price}</h1>
-                                    </CardHeader>
-                                </OrderContainer>
-                                <Body>
+                                    </OrderHeader>
+                                </CardContainer>
+                                <OrderBody>
                                     <div>
-                                        <h1>{order.quantity}</h1>
-                                        <GoDiffAdded />
-                                        <GoDiffRemoved />
+                                        <h1>R$: {price}</h1>
+                                        <MdAdd />
+                                        <MdRemove />
                                     </div>
-                                </Body>
+                                </OrderBody>
                             </Card>
 
                         </>
