@@ -37,15 +37,15 @@ const Image = styled.img`
 height: 150px;
 width: 180px;
 margin: 20px;
-border-radius: 5px;
-border: solid 1px grey;
+borders-radius: 5px;
+borders: solid 1px grey;
 
 `
 const StyledHeader = styled.div`
 display: flex;
-border: 1px solid;
+borders: 1px solid;
 background: #fff;
-border-radius: 3px;
+borders-radius: 3px;
 h1{
     font-family: ${({ theme }) => theme.fonts.default};
     color: #dd2e44;
@@ -70,8 +70,8 @@ const Button = styled.button`
 background: #173828;
 cursor: pointer;
 color: white;
-border: none;
-border-radius: 5px;
+borders: none;
+borders-radius: 5px;
 width: 20em;
 height: 3em;
 `
@@ -82,9 +82,9 @@ display: column;
 const StyledBody = styled.div`
 
 padding: 10px;
-border: 1px solid;
+borders: 1px solid;
 background: #fff;
-border-radius: 3px;
+borders-radius: 3px;
 
 h4{
     margin: 0;
@@ -131,16 +131,18 @@ function ProductModal() {
     const newCart = useContext(CartContext)
     const { isModalOpen, extraIngredients, setExtraIngredients, setModalOpen } = newProduct;
     const { product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
-    const { setOrder, order, checkedState, setCheckedState, setSelectedIngredients, selectedIngredients } = newCart;
+    const { setOrders, orders, setSelectedIngredients, selectedIngredients } = newCart;
+
     //state
-    const [orderValue, setOrderValue] = useState("");
+    const [ordersValue, setOrdersValue] = useState("");
+    const [checkedState, setCheckedState] = useState([]);
 
 
     useEffect(() => {
         setCheckedState(new Array(extraIngredients.length).fill(false))
         // this method is throwing a warning rendering the first time: 'it changes a uncontrolled 
         // state to controled because of the 'fill method'. Must think a better way to do this'
-        setOrderValue(price)
+        setOrdersValue(price)
     }, [extraIngredients, price, setCheckedState])
 
 
@@ -162,22 +164,22 @@ function ProductModal() {
         })
         toastMessage('Adicionado com sucesso!')
 
-        const exist = order.find(x => x.id === id)
+        const exist = orders.find(x => x.id === id)
 
         if (exist) {
-            setOrder(
-                order.map((item) =>
-                    item.id === id ? { ...exist, quantity: exist.quantity + 1 } : item
+            setOrders(
+                orders.map((item) =>
+                item.id === id ? { ...exist, quantity: exist.quantity + 1 } : item
                 )
             )
         }
         else {
-            setOrder([...order, {
+            setOrders([...orders, {
+                extraIngredients,
                 id: uuidv4(),
                 quantity: 1,
                 name: name,
-                price: orderValue,
-                extraIngredients,
+                price: ordersValue,
             }])
         }
     }
@@ -204,7 +206,7 @@ function ProductModal() {
             return floatPreviousValue
         }, parseFloat(price.replace(',', '.')));
 
-        setOrderValue(totalPrice.toFixed(2).replace('.', ','));
+        setOrdersValue(totalPrice.toFixed(2).replace('.', ','));
 
     }
     return (
@@ -261,12 +263,12 @@ function ProductModal() {
 
                             <div>
 
-                                <h2>R$ {orderValue}</h2>
+                                <h2>R$ {ordersValue}</h2>
                                 <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
                             </div>
                         </Footer>
                     </ProductDetails>
-                    <IoClose onClick={cleanChecked} /> {/*  change it to a function that cleans the order state and close de modal */}
+                    <IoClose onClick={cleanChecked} /> {/*  change it to a function that cleans the orders state and close de modal */}
                 </StyledProductModal>
             </StyledModalContainer>
         </IconContext.Provider >

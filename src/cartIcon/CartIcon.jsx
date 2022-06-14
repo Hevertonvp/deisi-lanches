@@ -25,11 +25,11 @@ function CartIcon() {
 
     const newCart = useContext(CartContext)
 
-    const { order } = newCart;
+    const { orders } = newCart;
 
     return (
         <IconContainer to={'cart'}>
-            <h4> {order.length}</h4>
+            <h4> {orders.length}</h4>
             <FiShoppingCart />
         </IconContainer>
 

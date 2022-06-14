@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { getProducts } from "../services/api";
+import { v4 as uuidv4 } from "uuid";
 
 const ProductContext = createContext();
 
@@ -21,7 +22,7 @@ export function ProductProvider({ children }) {
     );
     setExtraIngredients(
       ingredients.map((ingredient) => {
-        return { ...ingredient, isSelected: false };   // selecting items from the cart list
+        return { ...ingredient, isSelected: false, id: uuidv4() }; // selecting items from the cart list
       })
     );
   }

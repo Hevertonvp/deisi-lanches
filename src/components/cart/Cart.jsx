@@ -147,31 +147,18 @@ function Cart() {
 
     //context
     const newCart = useContext(CartContext)
-    const { order, setOrder } = newCart
+    const { orders, setOrders } = newCart
+    const [order, setOrder] = useState({})
 
 
-    // function addIngredient(orderId, position, uncheckedIngredients) {  // array : extraIngredients === false
-    //     if (orderId === order.id) {
-    //         uncheckedIngredients.map((item, i) => {
-    //             if (i === position) {
-    //                 return item.isSelected = !item.isSelected
-    //             }
-    //         })
-    //     }
-    //     setOrder([...order])
-    // }
-    // function addIngredient(orderId, position, uncheckedIngredients) {  // array : extraIngredients === false
-    //     if (orderId === order.id) {
-    //       const checked =  uncheckedIngredients.map((item, i) => {
-    //             if (i === position) {
-    //                 item.isSelected = true
-    //             }
-    //         })
-            
-    //     }
+    // order.id, item.id, i, index, selected
+
+    function addIngredient(ordersId, itemId, orderIndex, ingredientIndex, unSelected) {
+      
+     
+    }
 
 
-    // }
 
     return (
         <OrdersWrapper>
@@ -179,7 +166,7 @@ function Cart() {
                 <h1>Confira seu pedido:</h1>
             </Header>
 
-            {order.map(({ name, price, extraIngredients, id }) => {
+            {orders.map(({ name, price, extraIngredients }, i) => {
 
                 const selected = extraIngredients.filter((x) => x.isSelected === true)
                 const unSelected = extraIngredients.filter((x) => x.isSelected === false)
@@ -199,7 +186,7 @@ function Cart() {
                                                 selected.map((item, index) => {
                                                     return (
                                                         <div>
-                                                            <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => { addIngredient(order.id, index, selected) }} /></h4>
+                                                            <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => { addIngredient(orders.id, item.id, i, index, selected) }} /></h4>
                                                         </div>
                                                     )
                                                 })
@@ -215,7 +202,7 @@ function Cart() {
                                                 unSelected.map((item, index) => {
                                                     return (
                                                         <div>
-                                                            <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => { addIngredient(order.id, index, unSelected) }} /></h4>
+                                                            <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => { addIngredient(orders.id, item.id, i, index, unSelected) }} /></h4>
                                                         </div>
                                                     )
                                                 })
@@ -241,8 +228,8 @@ function Cart() {
                             <Card>
                                 <CardContainer>
                                     <OrderHeader>
-                                        <h2>{order.name}</h2>
-                                        <h1>R$: {order.price}</h1>
+                                        <h2>{orders.name}</h2>
+                                        <h1>R$: {orders.price}</h1>
                                     </OrderHeader>
                                 </CardContainer>
                                 <OrderBody>
