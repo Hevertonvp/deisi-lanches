@@ -1,16 +1,24 @@
+import { useReducer } from "react";
 import { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
-export function OrderProvider({ children }) {
-  const [orders, setOrders] = useState([]);
- const [selectedIngredients, setSelectedIngredients] = useState([]);
-  const [checkedState, setCheckedState] = useState([]);
+export function CartProvider({ children, reducer, initialState }) {
+  const [cartState, cartDispatch] = useReducer(reducer, initialState);
+  // const [orders, setOrders] = useState([]);
+  // const [selectedIngredients, setSelectedIngredients] = useState([]);
+  // const [checkedState, setCheckedState] = useState([]);
+
+  function updateCart(type, payload) {
+    console.log(payload);
+    cartDispatch({
+      type,
+      payload,
+    });
+  }
 
   return (
-    <CartContext.Provider
-      value={{ setOrders, orders, checkedState, setCheckedState, selectedIngredients, setSelectedIngredients}}
-    >
+    <CartContext.Provider value={{ cartState, cartDispatch, updateCart }}>
       {children}
     </CartContext.Provider>
   );

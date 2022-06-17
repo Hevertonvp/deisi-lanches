@@ -4,7 +4,10 @@ import { MdAdd, MdRemove } from 'react-icons/md'
 import { FaHamburger, FaHotdog } from 'react-icons/fa'
 import { TiInputChecked } from 'react-icons/ti'
 import { useContext, useState, useEffect } from 'react'
+import useCart from '../../hooks/useCart/useCart'
 import ProductContext from '../../context/ProductContext'
+import { UPDATE_ORDERS } from '../../context/reducers/cartReducer'
+
 
 
 const Header = styled.div`
@@ -98,28 +101,27 @@ svg{
     cursor: pointer;
 }
 `
-const UnselectedIngredients = styled.div`
-background: #1c1c16;
-color: lightgrey;
-padding: 10px;
-border-radius: 10px;
-/* box-shadow: 0 0 5px #1c1c16; */
-display: flex;
-flex-direction: column;
-h4{
-    margin: 5px;
-    font-weight: 50;
-}
-@media (max-width: 768px){
-  font-size: 15px;
-}
-svg{
-    margin: 0 0 -8px 5px;
-    color: #00b81c;
-    font-size: 30px;
-    cursor: pointer;
-}
-`
+// const UnselectedIngredients = styled.div`
+// background: #1c1c16;
+// color: lightgrey;
+// padding: 10px;
+// border-radius: 10px;
+// display: flex;
+// flex-direction: column;
+// h4{
+//     margin: 5px;
+//     font-weight: 50;
+// }
+// @media (max-width: 768px){
+//   font-size: 15px;
+// }
+// svg{
+//     margin: 0 0 -8px 5px;
+//     color: #00b81c;
+//     font-size: 30px;
+//     cursor: pointer;
+// }
+// `
 
 const OrderBody = styled.div`
 display: flex;
@@ -146,19 +148,38 @@ function Cart() {
 
 
     //context
-    const newCart = useContext(CartContext)
-    const { orders, setOrders } = newCart
-    const [order, setOrder] = useState({})
+    const newCart = useCart()
+    const { cartState, updateCart } = newCart
+    const { extraIngredients } = useContext(ProductContext); // 
 
+    function addIngredient(ordersId, itemId, isAdded) {
+        let orders = cartState?.orders
+        if (isAdded) {
+            orders = orders.map(o => {
+                if (o.id === ordersId) {
+                    o.selected = [
+                        ...o.selected, extraIngredients
+                            .find(e => e.id === itemId)];
+                }
+                return o
+            })
 
-    // order.id, item.id, i, index, selected
-
-    function addIngredient(ordersId, itemId, orderIndex, ingredientIndex, unSelected) {
-      
-     
+            updateCart(UPDATE_ORDERS, {
+                orders
+            })
+            return
+        }
+        orders = orders.map(o => {
+            if (o.id === ordersId) {
+                o.selected = o.selected.filter(x => x.id !== itemId)
+            }
+            return o
+        })
+        updateCart(UPDATE_ORDERS, {
+            orders
+        })
+        return
     }
-
-
 
     return (
         <OrdersWrapper>
@@ -166,84 +187,67 @@ function Cart() {
                 <h1>Confira seu pedido:</h1>
             </Header>
 
-            {orders.map(({ name, price, extraIngredients }, i) => {
-
-                const selected = extraIngredients.filter((x) => x.isSelected === true)
-                const unSelected = extraIngredients.filter((x) => x.isSelected === false)
-
-                if (extraIngredients.length > 0) {
-                    return (
-                        <Card>
-                            <CardContainer>
-                                <OrderHeader>
-                                    <div><h1>{name}</h1> </div>
-                                </OrderHeader>
-                                {selected.length > 0 ?
-                                    <div>
-                                        <p>Items Extras Selecionados:</p>
-                                        <SelectedIngredients>
-                                            {
-                                                selected.map((item, index) => {
-                                                    return (
-                                                        <div>
-                                                            <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => { addIngredient(orders.id, item.id, i, index, selected) }} /></h4>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </SelectedIngredients>
-                                    </div>
-                                    : ""}
-                                {unSelected.length > 0 ?
-                                    <div>
-                                        <p>Adicionar items:</p>
-                                        <UnselectedIngredients>
-                                            {
-                                                unSelected.map((item, index) => {
-                                                    return (
-                                                        <div>
-                                                            <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => { addIngredient(orders.id, item.id, i, index, unSelected) }} /></h4>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </UnselectedIngredients>
-                                    </div>
-                                    : ""}
-
-                            </CardContainer>
-                            <OrderBody>
+            {cartState?.orders?.map(({ name, price, selected, id }) => {
+                const selectedIds = selected.map((item) => item.id)
+                return (
+                    <Card key={id}>
+                        <CardContainer>
+                            <OrderHeader>
+                                <div><h1>{name}</h1> </div>
+                            </OrderHeader>
+                            {selected?.length > 0 ?
                                 <div>
-                                    <h1>R$: {price}</h1>
-                                    <MdAdd color="#05fc2a" />
-                                    <MdRemove />
+                                    <p>Items Extras Selecionados:</p>
+                                    <SelectedIngredients>
+                                        {
+                                            selected?.map((item, index) => {
+                                                return (
+                                                    <div>
+                                                        <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
+                                                            addIngredient(id, item.id, false)
+                                                        }
+                                                        } />
+                                                        </h4>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </SelectedIngredients>
                                 </div>
-                            </OrderBody>
-                        </Card>
-                    )
-                }
-                else {
-                    return (
-                        <>
-                            <Card>
-                                <CardContainer>
-                                    <OrderHeader>
-                                        <h2>{orders.name}</h2>
-                                        <h1>R$: {orders.price}</h1>
-                                    </OrderHeader>
-                                </CardContainer>
-                                <OrderBody>
-                                    <div>
-                                        <h1>R$: {price}</h1>
-                                        <MdAdd />
-                                        <MdRemove />
-                                    </div>
-                                </OrderBody>
-                            </Card>
+                                : ""}
+                            {selected?.length < 3 ?
+                                <div>
+                                    <p>Items Extras Selecionados:</p>
+                                    <SelectedIngredients>
+                                        {
+                                            extraIngredients?.filter(
+                                                (item) => !selectedIds.includes(item.id)
+                                            ).map((item, index) => {
+                                                return (
+                                                    <div>
+                                                        <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => {
+                                                            addIngredient(id, item.id, true)
+                                                        }}
+                                                        />
+                                                        </h4>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </SelectedIngredients>
+                                </div>
+                                : ""}
+                        </CardContainer>
+                        <OrderBody>
+                            <div>
+                                <h1>R$: {price}</h1>
+                                <MdAdd color="#05fc2a" />
+                                <MdRemove />
+                            </div>
+                        </OrderBody>
+                    </Card>
+                )
 
-                        </>
-                    )
-                }
             })}
 
         </OrdersWrapper >

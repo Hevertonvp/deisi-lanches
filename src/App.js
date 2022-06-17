@@ -7,14 +7,15 @@ import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
 import OrderModal from "./components/orderModal/OrderModal";
 import { ProductProvider } from "./context/ProductContext";
-import { OrderProvider } from "./context/CartContext";
+import { CartProvider } from "./context/CartContext";
 import { useState } from "react";
 import Cart from "./components/cart/Cart";
+import { cartReducer, initialState } from "./context/reducers/cartReducer";
 
 function App() {
   const theme = {
     colors: {
-      body:"rgba(4, 11, 43, .7)"
+      body: "rgba(4, 11, 43, .7)",
     },
     fonts: {
       default: "'Francois One', sans-serif",
@@ -28,7 +29,7 @@ function App() {
       <GlobalStyles />
       <Router>
         <ProductProvider>
-          <OrderProvider>
+          <CartProvider initialState={initialState} reducer={cartReducer}>
             <OrderModal />
             <NavBar />
             <Routes>
@@ -37,7 +38,7 @@ function App() {
               <Route exact path="/cardapio" element={<Cardapio />} />
               <Route exact path="/cart" element={<Cart />} />
             </Routes>
-          </OrderProvider>
+          </CartProvider>
         </ProductProvider>
       </Router>
     </ThemeProvider>

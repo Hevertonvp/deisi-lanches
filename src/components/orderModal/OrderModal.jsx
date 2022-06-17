@@ -7,6 +7,8 @@ import { useContext, useEffect, useState } from 'react'
 import CartContext from '../../context/CartContext'
 import ProductContext from '../../context/ProductContext'
 import { v4 as uuidv4 } from 'uuid';
+import useCart from '../../hooks/useCart/useCart';
+import { UPDATE_ORDERS } from '../../context/reducers/cartReducer';
 
 
 
@@ -128,21 +130,31 @@ function ProductModal() {
 
     //context
     const newProduct = useContext(ProductContext)
-    const newCart = useContext(CartContext)
+    const { cartState, updateCart } = useCart()
     const { isModalOpen, extraIngredients, setExtraIngredients, setModalOpen } = newProduct;
     const { product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
-    const { setOrders, orders, setSelectedIngredients, selectedIngredients } = newCart;
+
 
     //state
     const [ordersValue, setOrdersValue] = useState("");
-    const [checkedState, setCheckedState] = useState([]);
+    const [checkedState, setCheckedState] = useState({});
+
+    //starts with an empty object, set an array of array composed with the IDs of the extraIngredients and the the boolean value "false".
+
+
 
 
     useEffect(() => {
-        setCheckedState(new Array(extraIngredients.length).fill(false))
-        // this method is throwing a warning rendering the first time: 'it changes a uncontrolled 
-        // state to controled because of the 'fill method'. Must think a better way to do this'
+        let initialChecked = extraIngredients.map(e => [e.id, false])
+
+        // array de arrays [[id, boolean]]
+        setCheckedState(
+            Object.fromEntries(initialChecked)   // creates an object from the 'key-value' pairs of the array
+        )
+
         setOrdersValue(price)
+
+        console.log(Object.fromEntries(initialChecked))
     }, [extraIngredients, price, setCheckedState])
 
 
@@ -155,33 +167,21 @@ function ProductModal() {
     }
 
     function addOrder() {
-
-        checkedState.map((state, i) => {
-            if (state) {
-                return extraIngredients[i].isSelected = true
-            }
-
-        })
         toastMessage('Adicionado com sucesso!')
+        const selected = extraIngredients.filter((x) => x.isSelected === true)
 
-        const exist = orders.find(x => x.id === id)
-
-        if (exist) {
-            setOrders(
-                orders.map((item) =>
-                item.id === id ? { ...exist, quantity: exist.quantity + 1 } : item
-                )
-            )
-        }
-        else {
-            setOrders([...orders, {
-                extraIngredients,
+        updateCart(
+            UPDATE_ORDERS, {
+            orders: [...cartState.orders, {
+                selected,
                 id: uuidv4(),
                 quantity: 1,
                 name: name,
                 price: ordersValue,
-            }])
+            }]
         }
+        )
+
     }
 
     function cleanChecked() {
@@ -189,25 +189,22 @@ function ProductModal() {
         setModalOpen(false)
     }
 
-    function handleOnChange(position) {
+    function handleOnChange(id) {
 
-        const updatedState = checkedState.map((item, index) =>
-            index === position ? !item : item
+        const currentValue = !checkedState[id]
+        const updatedState = { ...checkedState, [id]: currentValue }
 
-        );
         setCheckedState(updatedState);
 
-        const totalPrice = updatedState.reduce((previousValue, currentValue, index) => {
-            const floatIngredientsPrice = parseFloat(extraIngredients[index].price.replace(',', '.'));
-            const floatPreviousValue = parseFloat(previousValue);
-            if (currentValue) {
-                return floatPreviousValue + floatIngredientsPrice
+        let extraPrice = 0
+        extraIngredients.forEach(ingredient => {
+            if (updatedState[ingredient.id]) {
+                extraPrice = extraPrice + parseFloat(ingredient.price.replace(',', '.'))
             }
-            return floatPreviousValue
-        }, parseFloat(price.replace(',', '.')));
+        })
 
+        const totalPrice = parseFloat(price.replace(',', '.')) + extraPrice
         setOrdersValue(totalPrice.toFixed(2).replace('.', ','));
-
     }
     return (
 
@@ -238,21 +235,18 @@ function ProductModal() {
                         <h2>Adicionais:</h2>
 
                         <StyledBody>
-
-                            {extraIngredients?.map(({ name, price }, index) => {
+                            {extraIngredients?.map(({ name, price, id }, index) => {
                                 const str = name;
-
                                 return (
-
                                     <ExtraIngredients key={index}>
                                         <h4>{`${str[0].toUpperCase() + str.substr(1)} (R$ ${price})`}</h4>
                                         <input
-                                            id={index}
+                                            id={id}
                                             type="checkbox"
                                             name={name}
-                                            value={name}
-                                            checked={checkedState[index]}
-                                            onChange={() => handleOnChange(index)}
+                                            value={checkedState[id]}
+                                            checked={checkedState[id]}
+                                            onChange={() => handleOnChange(id)}
                                         />
                                     </ExtraIngredients>)
                             })}

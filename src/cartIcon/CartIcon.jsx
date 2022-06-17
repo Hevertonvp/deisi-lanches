@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FiShoppingCart } from 'react-icons/fi'
 import CartContext from '../context/CartContext'
 import { useContext } from 'react'
+import useCart from '../hooks/useCart/useCart'
 
 
 
@@ -23,13 +24,14 @@ h4 {
 
 function CartIcon() {
 
-    const newCart = useContext(CartContext)
 
-    const { orders } = newCart;
+    const newCart = useCart()
+    const { cartState, updateCart } = newCart
+
 
     return (
         <IconContainer to={'cart'}>
-            <h4> {orders.length}</h4>
+            <h4> {cartState.orders.length}</h4>
             <FiShoppingCart />
         </IconContainer>
 
