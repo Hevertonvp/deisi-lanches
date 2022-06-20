@@ -177,7 +177,7 @@ function Cart() {
         })
         updateCart(UPDATE_ORDERS, {
             orders
-        })
+        })        
         return
     }
 
@@ -200,7 +200,7 @@ function Cart() {
                                     <p>Items Extras Selecionados:</p>
                                     <SelectedIngredients>
                                         {
-                                            selected?.map((item, index) => {
+                                            selected?.map((item) => {
                                                 return (
                                                     <div>
                                                         <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
@@ -215,9 +215,9 @@ function Cart() {
                                     </SelectedIngredients>
                                 </div>
                                 : ""}
-                            {selected?.length < 3 ?
+                            {selected?.length >= 0 ?
                                 <div>
-                                    <p>Items Extras Selecionados:</p>
+                                    <p>Adicionar itens:</p>
                                     <SelectedIngredients>
                                         {
                                             extraIngredients?.filter(
@@ -225,7 +225,7 @@ function Cart() {
                                             ).map((item, index) => {
                                                 return (
                                                     <div>
-                                                        <h4>{item.name} - R$ {item.price} <MdAdd onClick={() => {
+                                                        <h4>{item.name} - R$ {item.price} <MdAdd color="#05fc2a" onClick={() => {
                                                             addIngredient(id, item.id, true)
                                                         }}
                                                         />

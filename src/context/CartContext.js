@@ -10,7 +10,6 @@ export function CartProvider({ children, reducer, initialState }) {
   // const [checkedState, setCheckedState] = useState([]);
 
   function updateCart(type, payload) {
-    console.log(payload);
     cartDispatch({
       type,
       payload,

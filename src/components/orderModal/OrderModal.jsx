@@ -15,7 +15,7 @@ import { UPDATE_ORDERS } from '../../context/reducers/cartReducer';
 const StyledModalContainer = styled.div`
 width: 100vw;
 height: 100vh;
-background: rgba(0, 0, 0, .8);   
+background: rgba(0, 0, 0, .8);
 position: fixed;
 display: flex;
 justify-content: center;
@@ -29,7 +29,7 @@ padding: 30px;
 background: #f5f5f5;
 width: 80%;
 height: 80%;
-svg{   
+svg{
 cursor: pointer;
 }
 overflow: scroll;
@@ -52,20 +52,20 @@ h1{
     font-family: ${({ theme }) => theme.fonts.default};
     color: #dd2e44;
     font-size: 50px;
-    text-shadow: 1px 1px #525040; 
-    
+    text-shadow: 1px 1px #525040;
+
 }
 h3{
     font-family: ${({ theme }) => theme.fonts.default};
     color:;
-    
+
     margin-left: 10px;
-    
+
 }
 span{
     display: flex;
     align-items: center;
-    
+
 }
 `
 const Button = styled.button`
@@ -111,7 +111,7 @@ height:70%;
 h2{
     font-family: ${({ theme }) => theme.fonts.default};
     color: #0f6138;
-    margin-left: 15px;   
+    margin-left: 15px;
 }
 
 `
@@ -138,7 +138,7 @@ function ProductModal() {
     //state
     const [ordersValue, setOrdersValue] = useState("");
     const [checkedState, setCheckedState] = useState({});
-
+    const [selected, setSelected] = useState([])
     //starts with an empty object, set an array of array composed with the IDs of the extraIngredients and the the boolean value "false".
 
 
@@ -151,12 +151,8 @@ function ProductModal() {
         setCheckedState(
             Object.fromEntries(initialChecked)   // creates an object from the 'key-value' pairs of the array
         )
-
         setOrdersValue(price)
-
-        console.log(Object.fromEntries(initialChecked))
     }, [extraIngredients, price, setCheckedState])
-
 
     function toastMessage(message) {
         toast.success(message, {
@@ -168,8 +164,16 @@ function ProductModal() {
 
     function addOrder() {
         toastMessage('Adicionado com sucesso!')
-        const selected = extraIngredients.filter((x) => x.isSelected === true)
 
+        // extraIngredients.forEach((item) => {
+        //     if (checkedState[item.id]) {
+        //         item.isSelected = true
+        //     }
+        // })
+
+
+         const selected = extraIngredients.filter((x) => x.isSelected === true)
+    
         updateCart(
             UPDATE_ORDERS, {
             orders: [...cartState.orders, {
@@ -181,27 +185,34 @@ function ProductModal() {
             }]
         }
         )
-
+       
     }
-
+    
     function cleanChecked() {
-        setCheckedState(new Array(extraIngredients.length).fill(false))
+
         setModalOpen(false)
     }
+   
 
     function handleOnChange(id) {
 
         const currentValue = !checkedState[id]
         const updatedState = { ...checkedState, [id]: currentValue }
-
         setCheckedState(updatedState);
 
+        extraIngredients.forEach((ingredient) => {           
+                ingredient.isSelected = updatedState[ingredient.id]          
+        })
+
         let extraPrice = 0
-        extraIngredients.forEach(ingredient => {
+        extraIngredients.forEach((ingredient) => {
             if (updatedState[ingredient.id]) {
-                extraPrice = extraPrice + parseFloat(ingredient.price.replace(',', '.'))
+                extraPrice += parseFloat(ingredient.price.replace(',', '.'))
             }
         })
+ 
+        //aqui mora o problema. Checked state atualiza numa boa, is selected não
+
 
         const totalPrice = parseFloat(price.replace(',', '.')) + extraPrice
         setOrdersValue(totalPrice.toFixed(2).replace('.', ','));
