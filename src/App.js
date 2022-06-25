@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Products from "./components/products/Products";
 import Cardapio from "./components/cardapio/Cardapio";
 import OrderModal from "./components/orderModal/OrderModal";
-import { ProductProvider } from "./context/ProductContext";
+import { ProductProvider } from "./context/productContext.js";
 import { CartProvider } from "./context/CartContext";
 import { useState } from "react";
 import Cart from "./components/cart/Cart";

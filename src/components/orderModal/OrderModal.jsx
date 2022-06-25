@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { IoClose } from 'react-icons/io5'
+import { MdAdd, MdRemove } from 'react-icons/md'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IconContext } from 'react-icons/lib';
 import { useContext, useEffect, useState } from 'react'
-import CartContext from '../../context/CartContext'
-import ProductContext from '../../context/ProductContext'
+import ProductContext from '../../context/productContext'
 import { v4 as uuidv4 } from 'uuid';
 import useCart from '../../hooks/useCart/useCart';
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer';
@@ -132,15 +132,14 @@ function ProductModal() {
     const newProduct = useContext(ProductContext)
     const { cartState, updateCart } = useCart()
     const { isModalOpen, extraIngredients, setExtraIngredients, setModalOpen } = newProduct;
-    const { product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
+    const { product, product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
 
 
     //state
     const [ordersValue, setOrdersValue] = useState("");
     const [checkedState, setCheckedState] = useState({});
-    const [selected, setSelected] = useState([])
+    const [productQuantity, setProductQuantity] = useState(1)
     //starts with an empty object, set an array of array composed with the IDs of the extraIngredients and the the boolean value "false".
-
 
 
 
@@ -163,21 +162,15 @@ function ProductModal() {
     }
 
     function addOrder() {
+
         toastMessage('Adicionado com sucesso!')
+        const selected = extraIngredients.filter((x) => x.isSelected === true)
 
-        // extraIngredients.forEach((item) => {
-        //     if (checkedState[item.id]) {
-        //         item.isSelected = true
-        //     }
-        // })
-
-
-         const selected = extraIngredients.filter((x) => x.isSelected === true)
-    
         updateCart(
             UPDATE_ORDERS, {
             orders: [...cartState.orders, {
                 selected,
+                extraIngredients,
                 id: uuidv4(),
                 quantity: 1,
                 name: name,
@@ -185,14 +178,8 @@ function ProductModal() {
             }]
         }
         )
-       
-    }
-    
-    function cleanChecked() {
 
-        setModalOpen(false)
     }
-   
 
     function handleOnChange(id) {
 
@@ -200,8 +187,8 @@ function ProductModal() {
         const updatedState = { ...checkedState, [id]: currentValue }
         setCheckedState(updatedState);
 
-        extraIngredients.forEach((ingredient) => {           
-                ingredient.isSelected = updatedState[ingredient.id]          
+        extraIngredients.forEach((ingredient) => {
+            ingredient.isSelected = updatedState[ingredient.id]
         })
 
         let extraPrice = 0
@@ -210,57 +197,62 @@ function ProductModal() {
                 extraPrice += parseFloat(ingredient.price.replace(',', '.'))
             }
         })
- 
-        //aqui mora o problema. Checked state atualiza numa boa, is selected não
-
-
         const totalPrice = parseFloat(price.replace(',', '.')) + extraPrice
         setOrdersValue(totalPrice.toFixed(2).replace('.', ','));
+    }
+    function handleQuantityChange(isAdded, value) {
+        setProductQuantity(
+            isAdded ? productQuantity + 1 : productQuantity > 0 ? productQuantity - 1 : 0
+        )
+        let floatValue = parseFloat(value.replace(',', '.')).toFixed(2)
+    
     }
     return (
 
         <IconContext.Provider value={{ size: '50px', color: '#dd2e44' }}>
             <ToastContainer />
-
             <StyledModalContainer isModalOpen={isModalOpen}>
                 <StyledProductModal >
                     <ProductDetails>
-
                         <StyledHeader>
-
                             <Image src={isModalOpen ? imgUrl : ''} alt="" />
                             <div>
                                 <span>
                                     <h1>{isModalOpen ? name.toUpperCase() : ''}</h1>
                                     <h2>R$ {price}</h2>
                                 </span>
-                                <h3>{isModalOpen ? ingredients.map(ingredient => {
+                                <h3>{isModalOpen ? ingredients?.map(ingredient => {
                                     const str = ingredient.name;
                                     return str[0].toUpperCase() + str.substr(1);
                                 }).reduce((prev, curr) => [prev, ', ', curr]) : ""}</h3>
                             </div>
                         </StyledHeader>
-
                         <p>{isModalOpen ? description : ''}</p>
-
-                        <h2>Adicionais:</h2>
-
+                        <h2>{extraIngredients.length > 0 ? 'Adicionais:' : `Quantidade: ${productQuantity}`}</h2>
                         <StyledBody>
-                            {extraIngredients?.map(({ name, price, id }, index) => {
-                                const str = name;
-                                return (
-                                    <ExtraIngredients key={index}>
-                                        <h4>{`${str[0].toUpperCase() + str.substr(1)} (R$ ${price})`}</h4>
-                                        <input
-                                            id={id}
-                                            type="checkbox"
-                                            name={name}
-                                            value={checkedState[id]}
-                                            checked={checkedState[id]}
-                                            onChange={() => handleOnChange(id)}
-                                        />
-                                    </ExtraIngredients>)
-                            })}
+                            {
+                                extraIngredients.length > 0 ?
+                                    extraIngredients?.map(({ name, price, id }, index) => {
+                                        const str = name;
+                                        return (
+                                            <ExtraIngredients key={index}>
+                                                <h4>{`${str[0].toUpperCase() + str.substr(1)} (R$ ${price})`}</h4>
+                                                <input
+                                                    id={id}
+                                                    type="checkbox"
+                                                    name={name}
+                                                    value={checkedState[id]}
+                                                    checked={checkedState[id]}
+                                                    onChange={() => handleOnChange(id)}
+                                                />
+                                            </ExtraIngredients>)
+                                    })
+                                    :
+                                    <ExtraIngredients>
+                                        <MdAdd color="green" onClick={() => handleQuantityChange(true, price)} />
+                                        <MdRemove onClick={() => handleQuantityChange(false, price)} />
+                                    </ExtraIngredients>
+                            }
 
                         </StyledBody>
 
@@ -273,7 +265,7 @@ function ProductModal() {
                             </div>
                         </Footer>
                     </ProductDetails>
-                    <IoClose onClick={cleanChecked} /> {/*  change it to a function that cleans the orders state and close de modal */}
+                    <IoClose onClick={() => setModalOpen(false)} /> {/*  change it to a function that cleans the orders state and close de modal */}
                 </StyledProductModal>
             </StyledModalContainer>
         </IconContext.Provider >

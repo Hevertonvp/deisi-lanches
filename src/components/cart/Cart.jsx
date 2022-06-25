@@ -1,11 +1,6 @@
 import styled from 'styled-components'
-import CartContext from '../../context/CartContext'
 import { MdAdd, MdRemove } from 'react-icons/md'
-import { FaHamburger, FaHotdog } from 'react-icons/fa'
-import { TiInputChecked } from 'react-icons/ti'
-import { useContext, useState, useEffect } from 'react'
 import useCart from '../../hooks/useCart/useCart'
-import ProductContext from '../../context/ProductContext'
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer'
 
 
@@ -101,27 +96,6 @@ svg{
     cursor: pointer;
 }
 `
-// const UnselectedIngredients = styled.div`
-// background: #1c1c16;
-// color: lightgrey;
-// padding: 10px;
-// border-radius: 10px;
-// display: flex;
-// flex-direction: column;
-// h4{
-//     margin: 5px;
-//     font-weight: 50;
-// }
-// @media (max-width: 768px){
-//   font-size: 15px;
-// }
-// svg{
-//     margin: 0 0 -8px 5px;
-//     color: #00b81c;
-//     font-size: 30px;
-//     cursor: pointer;
-// }
-// `
 
 const OrderBody = styled.div`
 display: flex;
@@ -150,15 +124,15 @@ function Cart() {
     //context
     const newCart = useCart()
     const { cartState, updateCart } = newCart
-    const { extraIngredients } = useContext(ProductContext); // 
 
-    function addIngredient(ordersId, itemId, isAdded) {
+
+    function addIngredient(ordersId, itemId, isAdded, ingredients) {
         let orders = cartState?.orders
         if (isAdded) {
             orders = orders.map(o => {
                 if (o.id === ordersId) {
                     o.selected = [
-                        ...o.selected, extraIngredients
+                        ...o.selected, ingredients
                             .find(e => e.id === itemId)];
                 }
                 return o
@@ -177,17 +151,16 @@ function Cart() {
         })
         updateCart(UPDATE_ORDERS, {
             orders
-        })        
+        })
         return
     }
-
     return (
         <OrdersWrapper>
             <Header>
                 <h1>Confira seu pedido:</h1>
             </Header>
 
-            {cartState?.orders?.map(({ name, price, selected, id }) => {
+            {cartState?.orders?.map(({ name, price, selected, id, extraIngredients }) => {
                 const selectedIds = selected.map((item) => item.id)
                 return (
                     <Card key={id}>
@@ -204,7 +177,7 @@ function Cart() {
                                                 return (
                                                     <div>
                                                         <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
-                                                            addIngredient(id, item.id, false)
+                                                            addIngredient(id, item.id, false, extraIngredients)
                                                         }
                                                         } />
                                                         </h4>
@@ -215,8 +188,9 @@ function Cart() {
                                     </SelectedIngredients>
                                 </div>
                                 : ""}
-                            {selected?.length >= 0 ?
-                                <div>
+                            {selected?.length > 3 ?
+                                ""
+                                : <div>
                                     <p>Adicionar itens:</p>
                                     <SelectedIngredients>
                                         {
@@ -226,7 +200,7 @@ function Cart() {
                                                 return (
                                                     <div>
                                                         <h4>{item.name} - R$ {item.price} <MdAdd color="#05fc2a" onClick={() => {
-                                                            addIngredient(id, item.id, true)
+                                                            addIngredient(id, item.id, true, extraIngredients)
                                                         }}
                                                         />
                                                         </h4>
@@ -235,8 +209,7 @@ function Cart() {
                                             })
                                         }
                                     </SelectedIngredients>
-                                </div>
-                                : ""}
+                                </div>}
                         </CardContainer>
                         <OrderBody>
                             <div>
@@ -249,7 +222,6 @@ function Cart() {
                 )
 
             })}
-
         </OrdersWrapper >
     )
 }

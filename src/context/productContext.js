@@ -17,13 +17,15 @@ export function ProductProvider({ children }) {
   function addProduct(product) {
     setProduct(product);
     setModalOpen(!isModalOpen);
-    const ingredients = product.ingredients.filter(
+    const ingredients = product.ingredients?.filter(
       (ingredient) => ingredient.isExtra === true
     );
     setExtraIngredients(
-      ingredients.map((ingredient) => {
-        return { ...ingredient, isSelected: false, id: uuidv4() }; // selecting items from the cart list
-      })
+      ingredients
+        ? ingredients.map((ingredient) => {
+            return { ...ingredient, isSelected: false, id: uuidv4() }; // selecting items from the cart list
+          })
+        : []
     );
   }
 

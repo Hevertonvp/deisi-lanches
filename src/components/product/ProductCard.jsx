@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { MdOutlineAddShoppingCart } from 'react-icons/md'
 import { IconContext } from 'react-icons/lib';
 import { useContext } from 'react';
-import  ProductContext  from '../../context/ProductContext'
+import  ProductContext  from '../../context/productContext.js'
 
 
 

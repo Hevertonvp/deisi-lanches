@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import ProductContext from '../../context/ProductContext'
+import ProductContext from '../../context/productContext'
 import ProductCard from '../product/ProductCard'
 import styled from 'styled-components'
 
@@ -66,7 +66,19 @@ function Products() {
                     )
                 })}
             </StyledProductsContainer>
-
+            <StyledProductHeader>
+                <h1>Bebidas</h1>
+            </StyledProductHeader>
+            <StyledProductsContainer>
+                {products.drinks?.map((drink) => {
+                    return (
+                        <ProductCard
+                            key={drink.id}
+                            product={drink}
+                        />
+                    )
+                })}
+            </StyledProductsContainer>
         </>
     )
 }

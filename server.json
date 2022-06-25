@@ -584,6 +584,36 @@
         ],
         "imgUrl": "/images/cachorro2.jpg"
       }
+    ],
+    "drinks": [
+      {
+        "name": "Skol",
+        "description": "lata 350ml",
+        "price": "3,50",
+        "id": "130",
+        "imgUrl": "/images/skol350.jpg"
+      },
+      {
+        "name": "Skol",
+        "description": "lata 473ml",
+        "price": "5,50",
+        "id": "131",
+        "imgUrl": "/images/skol473.jpg"
+      },
+      {
+        "name": "coca-cola",
+        "description": "lata 350ml",
+        "price": "3,50",
+        "id": "132",
+        "imgUrl": "/images/coca350.jpg"
+      },
+      {
+        "name": "coca-cola",
+        "description": "garrafa 2L",
+        "price": "9,99",
+        "id": "133",
+        "imgUrl": "/images/refrigerante_coca_cola_pet_2l.png"
+      }
     ]
   }
 }
