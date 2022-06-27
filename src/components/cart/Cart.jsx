@@ -117,11 +117,8 @@ font-size: 2em;
 }
 `
 
-
 function Cart() {
 
-
-    //context
     const newCart = useCart()
     const { cartState, updateCart } = newCart
 
@@ -157,7 +154,7 @@ function Cart() {
     return (
         <OrdersWrapper>
             <Header>
-                <h1>Confira seu pedido:</h1>
+                { cartState?.orders.length > 0 ? <h1>Confira seu pedido:</h1> : <h1>Nenhum pedido selecionado</h1> }
             </Header>
 
             {cartState?.orders?.map(({ name, price, selected, id, extraIngredients }) => {

@@ -11,7 +11,6 @@ import useCart from '../../hooks/useCart/useCart';
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer';
 
 
-
 const StyledModalContainer = styled.div`
 width: 100vw;
 height: 100vh;
@@ -92,9 +91,7 @@ h4{
     margin: 0;
     color: #173828;
     font-family: ${({ theme }) => theme.fonts.infoText};
-
 }
-
 svg{
     width: 25px;
 }
@@ -131,26 +128,27 @@ function ProductModal() {
     //context
     const newProduct = useContext(ProductContext)
     const { cartState, updateCart } = useCart()
-    const { isModalOpen, extraIngredients, setExtraIngredients, setModalOpen } = newProduct;
-    const { product, product: { name, ingredients, description, imgUrl, price, id } } = newProduct;
+    const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
+    const { product: { name, ingredients, description, imgUrl, price } } = newProduct;
 
 
     //state
     const [ordersValue, setOrdersValue] = useState("");
     const [checkedState, setCheckedState] = useState({});
     const [productQuantity, setProductQuantity] = useState(1)
-    //starts with an empty object, set an array of array composed with the IDs of the extraIngredients and the the boolean value "false".
 
-
+    const floatPrice = parseFloat(price?.replace(',', '.'))
+    const quantityPrice = (floatPrice * productQuantity).toFixed(2)
 
     useEffect(() => {
         let initialChecked = extraIngredients.map(e => [e.id, false])
 
         // array de arrays [[id, boolean]]
         setCheckedState(
-            Object.fromEntries(initialChecked)   // creates an object from the 'key-value' pairs of the array
+            Object.fromEntries(initialChecked) //creates an object from the 'key-value' pairs of the array
         )
         setOrdersValue(price)
+
     }, [extraIngredients, price, setCheckedState])
 
     function toastMessage(message) {
@@ -172,13 +170,12 @@ function ProductModal() {
                 selected,
                 extraIngredients,
                 id: uuidv4(),
-                quantity: 1,
+                quantity: productQuantity,
                 name: name,
-                price: ordersValue,
+                price: extraIngredients.length > 0 ? ordersValue : quantityPrice  // drink our food?
             }]
         }
         )
-
     }
 
     function handleOnChange(id) {
@@ -200,12 +197,15 @@ function ProductModal() {
         const totalPrice = parseFloat(price.replace(',', '.')) + extraPrice
         setOrdersValue(totalPrice.toFixed(2).replace('.', ','));
     }
-    function handleQuantityChange(isAdded, value) {
+    function handleQuantityChange(isAdded) {
         setProductQuantity(
             isAdded ? productQuantity + 1 : productQuantity > 0 ? productQuantity - 1 : 0
         )
-        let floatValue = parseFloat(value.replace(',', '.')).toFixed(2)
-    
+    }
+    function clearOrder() {
+        
+        setProductQuantity(1)
+        setModalOpen(false)
     }
     return (
 
@@ -255,17 +255,14 @@ function ProductModal() {
                             }
 
                         </StyledBody>
-
                         <Footer>
-
                             <div>
-
-                                <h2>R$ {ordersValue}</h2>
+                                <h2>R$ {extraIngredients.length > 0 ? ordersValue : quantityPrice}</h2>
                                 <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
                             </div>
                         </Footer>
                     </ProductDetails>
-                    <IoClose onClick={() => setModalOpen(false)} /> {/*  change it to a function that cleans the orders state and close de modal */}
+                    <IoClose onClick={() => clearOrder()} /> {/*  change it to a function that cleans the orders state and close de modal */}
                 </StyledProductModal>
             </StyledModalContainer>
         </IconContext.Provider >
