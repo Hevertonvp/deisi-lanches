@@ -138,48 +138,50 @@ function ProductModal() {
     const [productQuantity, setProductQuantity] = useState(1)
 
     const floatPrice = parseFloat(price?.replace(',', '.'))
-    const quantityPrice = (floatPrice * productQuantity).toFixed(2)
+    const quantityPrice = (floatPrice * productQuantity)
 
     useEffect(() => {
         let initialChecked = extraIngredients.map(e => [e.id, false])
         setCheckedState(
-            Object.fromEntries(initialChecked) //creates an object from the 'key-value' pairs of the array
+            Object.fromEntries(initialChecked)
         )
         setOrdersValue(price)
 
     }, [extraIngredients, price, setCheckedState])
 
-    function toastMessage(message) {
-        toast.success(message, {
-            draggable: false,
-            position: toast.POSITION.TOP_LEFT,
-            autoClose: 1500
-        })
-    }
+    // function toastMessage(message) {
+    //     toast.success(message, {
+    //         draggable: false,
+    //         position: toast.POSITION.TOP_LEFT,
+    //         autoClose: 1500
+    //     })
+    // }
+
 
 
 
     function addOrder() {
 
 
-        // haverá uma lógica aqui. Caso os items extras escolhidos sejam os mesmos, ou o refrigerante seja o mesmo,
-        // apenas a quantidade será acrescida. deve ser feito no reducer.
-
-
-        toastMessage('Adicionado com sucesso!')
+        // toastMessage('Adicionado com sucesso!')
         const selected = extraIngredients.filter((x) => x.isSelected === true)
+        const exist = cartState.orders.find((o) => o.id === id)  // objeto com id do produto atual
 
-        const exist = cartState.orders.find((o) => o.id === id)
-
-        if (exist) {
+        if (exist && extraIngredients.length === 0) {
+            console.log(exist.price, quantityPrice)
             updateCart(
-                UPDATE_ORDERS,
-                cartState.orders.map((item) =>
-                    item.id === id ? { ...exist, quantity: exist.quantity + productQuantity } : item
-                )
-
+                UPDATE_ORDERS, {
+                orders: cartState.orders.map((item) => {
+                    return item.id === id ? {
+                        ...exist,
+                        quantity: exist.quantity + productQuantity,
+                        price: parseFloat(exist.price)
+                            + parseFloat(quantityPrice)
+                    } : item
+                })
+            }
             )
-            console.log(cartState.orders)
+
         }
         else {
             updateCart(
@@ -187,16 +189,15 @@ function ProductModal() {
                 orders: [...cartState.orders, {
                     selected,
                     extraIngredients,
-                    id: extraIngredients.length === 0 ? id : uuidv4(), // bring the id from DB if you are a drink.
+                    id: extraIngredients.length === 0 ? id : uuidv4(), // get id from DB if you are a drink.
                     quantity: productQuantity,
                     name,
-                    price: extraIngredients.length > 0 ? ordersValue : quantityPrice.replace('.', ',')  // drink our food?
+                    price: extraIngredients.length > 0 ?
+                        parseFloat(ordersValue.replace(',', '.')) : quantityPrice  // drink our food?
                 }]
             }
             )
-
         }
-
     }
 
     function handleOnChange(id) {
@@ -277,7 +278,7 @@ function ProductModal() {
                         </StyledBody>
                         <Footer>
                             <div>
-                                <h2>R$ {extraIngredients.length > 0 ? ordersValue : quantityPrice.replace('.', ',')}</h2>
+                                <h2>R$ {extraIngredients.length > 0 ? ordersValue : String(quantityPrice.toFixed(2)).replace('.', ',')}</h2>
                                 <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
                             </div>
                         </Footer>

@@ -124,6 +124,8 @@ color: white;
 
 function Cart() {
 
+    //price: float!
+
     const newCart = useCart()
     const { cartState, updateCart } = newCart
     const [cartValue, setCartValue] = useState(0)
@@ -160,7 +162,7 @@ function Cart() {
 
     useEffect(() => {
         const prices = cartState?.orders.map((item) => {
-            return parseFloat(item.price.replace(',', '.'))
+            return item.price
         })
         setCartValue(
             prices?.reduce((prev, next) => {
@@ -170,7 +172,7 @@ function Cart() {
     }, [cartState.orders, setCartValue])
 
     function handleOrderChange(isAdded) {
-        
+
     }
     return (
         <OrdersWrapper>
@@ -232,7 +234,7 @@ function Cart() {
                         <OrderBody>
                             <div>
                                 <h1>{quantity}</h1>
-                                <h1>R$: {price}</h1>
+                                <h1>R$: {String(price.toFixed(2)).replace('.', ',')}</h1>
                                 <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} />
                                 <MdRemove onClick={() => handleOrderChange(false)} />
                             </div>
@@ -241,7 +243,7 @@ function Cart() {
                 )
             })}
             <ClosingOrder>
-               {cartState.orders.length > 0 ? <h1>Valor Total: {cartValue}</h1> : ""}
+                {cartState.orders.length > 0 ? <h1>Valor Total: {String(cartValue).replace('.', ',')}</h1> : ""}
             </ClosingOrder>
         </OrdersWrapper >
     )
