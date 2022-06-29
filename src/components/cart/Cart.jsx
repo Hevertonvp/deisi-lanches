@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import useCart from '../../hooks/useCart/useCart'
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer'
+import { useEffect, useState } from 'react'
 
 
 
@@ -110,18 +111,22 @@ svg{
 color: #a3223c;
 font-size: 3em;
 margin: 0 10px 0 0;
+cursor: pointer;
 }
 h1{
 background: rgba(0, 0, 0, .7);
 font-size: 2em;
 }
 `
+const ClosingOrder = styled.div`
+color: white;
+`
 
 function Cart() {
 
     const newCart = useCart()
     const { cartState, updateCart } = newCart
-
+    const [cartValue, setCartValue] = useState(0)
 
     function addIngredient(ordersId, itemId, isAdded, ingredients) {
         let orders = cartState?.orders
@@ -149,15 +154,31 @@ function Cart() {
         updateCart(UPDATE_ORDERS, {
             orders
         })
+
         return
+    }
+
+    useEffect(() => {
+        const prices = cartState?.orders.map((item) => {
+            return parseFloat(item.price.replace(',', '.'))
+        })
+        setCartValue(
+            prices?.reduce((prev, next) => {
+                return (prev + next)
+            }, 0).toFixed(2)
+        )
+    }, [cartState.orders, setCartValue])
+
+    function handleOrderChange(isAdded) {
+        
     }
     return (
         <OrdersWrapper>
             <Header>
-                { cartState?.orders.length > 0 ? <h1>Confira seu pedido:</h1> : <h1>Nenhum pedido selecionado</h1> }
+                {cartState?.orders.length > 0 ? <h1>Confira seu pedido:</h1> : <h1>Nenhum pedido selecionado</h1>}
             </Header>
 
-            {cartState?.orders?.map(({ name, price, selected, id, extraIngredients }) => {
+            {cartState?.orders?.map(({ name, price, selected, id, extraIngredients, quantity }) => {
                 const selectedIds = selected.map((item) => item.id)
                 return (
                     <Card key={id}>
@@ -185,7 +206,7 @@ function Cart() {
                                     </SelectedIngredients>
                                 </div>
                                 : ""}
-                            {selected?.length > 3 ?
+                            {selected?.length >= 3 || extraIngredients.length === 0 ?
                                 ""
                                 : <div>
                                     <p>Adicionar itens:</p>
@@ -210,15 +231,18 @@ function Cart() {
                         </CardContainer>
                         <OrderBody>
                             <div>
+                                <h1>{quantity}</h1>
                                 <h1>R$: {price}</h1>
-                                <MdAdd color="#05fc2a" />
-                                <MdRemove />
+                                <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} />
+                                <MdRemove onClick={() => handleOrderChange(false)} />
                             </div>
                         </OrderBody>
                     </Card>
                 )
-
             })}
+            <ClosingOrder>
+               {cartState.orders.length > 0 ? <h1>Valor Total: {cartValue}</h1> : ""}
+            </ClosingOrder>
         </OrdersWrapper >
     )
 }

@@ -129,7 +129,7 @@ function ProductModal() {
     const newProduct = useContext(ProductContext)
     const { cartState, updateCart } = useCart()
     const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
-    const { product: { name, ingredients, description, imgUrl, price } } = newProduct;
+    const { product: { id, name, ingredients, description, imgUrl, price } } = newProduct;
 
 
     //state
@@ -142,8 +142,6 @@ function ProductModal() {
 
     useEffect(() => {
         let initialChecked = extraIngredients.map(e => [e.id, false])
-
-        // array de arrays [[id, boolean]]
         setCheckedState(
             Object.fromEntries(initialChecked) //creates an object from the 'key-value' pairs of the array
         )
@@ -159,23 +157,46 @@ function ProductModal() {
         })
     }
 
+
+
     function addOrder() {
+
+
+        // haverá uma lógica aqui. Caso os items extras escolhidos sejam os mesmos, ou o refrigerante seja o mesmo,
+        // apenas a quantidade será acrescida. deve ser feito no reducer.
+
 
         toastMessage('Adicionado com sucesso!')
         const selected = extraIngredients.filter((x) => x.isSelected === true)
 
-        updateCart(
-            UPDATE_ORDERS, {
-            orders: [...cartState.orders, {
-                selected,
-                extraIngredients,
-                id: uuidv4(),
-                quantity: productQuantity,
-                name: name,
-                price: extraIngredients.length > 0 ? ordersValue : quantityPrice  // drink our food?
-            }]
+        const exist = cartState.orders.find((o) => o.id === id)
+
+        if (exist) {
+            updateCart(
+                UPDATE_ORDERS,
+                cartState.orders.map((item) =>
+                    item.id === id ? { ...exist, quantity: exist.quantity + productQuantity } : item
+                )
+
+            )
+            console.log(cartState.orders)
         }
-        )
+        else {
+            updateCart(
+                UPDATE_ORDERS, {
+                orders: [...cartState.orders, {
+                    selected,
+                    extraIngredients,
+                    id: extraIngredients.length === 0 ? id : uuidv4(), // bring the id from DB if you are a drink.
+                    quantity: productQuantity,
+                    name,
+                    price: extraIngredients.length > 0 ? ordersValue : quantityPrice.replace('.', ',')  // drink our food?
+                }]
+            }
+            )
+
+        }
+
     }
 
     function handleOnChange(id) {
@@ -203,7 +224,6 @@ function ProductModal() {
         )
     }
     function clearOrder() {
-        
         setProductQuantity(1)
         setModalOpen(false)
     }
@@ -257,7 +277,7 @@ function ProductModal() {
                         </StyledBody>
                         <Footer>
                             <div>
-                                <h2>R$ {extraIngredients.length > 0 ? ordersValue : quantityPrice}</h2>
+                                <h2>R$ {extraIngredients.length > 0 ? ordersValue : quantityPrice.replace('.', ',')}</h2>
                                 <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
                             </div>
                         </Footer>
