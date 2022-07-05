@@ -192,6 +192,7 @@ function ProductModal() {
                     id: extraIngredients.length === 0 ? id : uuidv4(), // get id from DB if you are a drink.
                     quantity: productQuantity,
                     name,
+                    productPrice: price,
                     price: extraIngredients.length > 0 ?
                         parseFloat(ordersValue.replace(',', '.')) : quantityPrice  // drink our food?
                 }]
