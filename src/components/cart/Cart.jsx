@@ -51,7 +51,6 @@ p{
     color: lightgrey;
 }
 `
-
 const OrderHeader = styled.div`
 display: flex;
 color: #a3223c;
@@ -97,7 +96,6 @@ svg{
     cursor: pointer;
 }
 `
-
 const OrderBody = styled.div`
 display: flex;
 background: rgba(0, 0, 0, .5);
@@ -124,48 +122,52 @@ color: white;
 
 function Cart() {
 
-    //price: float!
+    //prices: float!
 
     const newCart = useCart()
     const { cartState, updateCart } = newCart
     const [cartValue, setCartValue] = useState(0)
-    let prices = []
-    function ingredientHandler(ordersId, itemId, isAdded, ingredients, value) {
-        let orders = cartState?.orders
-        if (isAdded) {
-            orders = orders
-                .map(order => {
-                    if (order.id === ordersId) {
-                        order.selected = [
-                            ...order.selected, ingredients
-                                .find(e => e.id === itemId)]
-                        order.selected
-                            .forEach(e => prices
-                                .push(parseFloat(e.price.replace(',', '.'))))
 
-                        console.log(prices.reduce((prev, next) => {
-                            return prev + next
-                        }))
-                    }
-                    return order
-                })
-            updateCart(UPDATE_ORDERS, {
-                orders
+
+    function ingredientHandler(ordersId, itemId, isAdded, ingredients) {
+        let orders = cartState?.orders
+        let prices = []
+
+        if (isAdded) {
+            orders = orders.map((order, key) => {
+                if (order.id === ordersId) {
+                    order.selected = [
+                        ...order.selected, ingredients
+                            .find(ingredient => ingredient.id === itemId)];
+                    order.selected.forEach((item) => {
+                        prices.push(parseFloat(item.price.replace(',', '.')))
+                    })
+                    //soma todos os selecionados acumulando. errado.
+                }
+                return order
             })
-            return
+            const tony = prices.reduce((acc, price) => {
+                return (acc + price)
+            }, 0)
+            const auxOrder = orders.find(order => order.id === ordersId);
+            auxOrder.price = (tony + parseFloat(auxOrder.productPrice.replace(',', '.')))
+        }
+        //this is so weird
+        else {
+            orders = orders.map(order => {
+                if (order.id === ordersId) {
+                    order.selected = order.selected.filter(x => x.id !== itemId)
+                    const selected = ingredients.find(ingredient => ingredient.id === itemId)
+                    order.price -= parseFloat(selected.price.replace(',', '.'))
+                }
+                return order
+            })
+
         }
 
-        orders = orders.map(order => {
-            if (order.id === ordersId) {
-                order.selected = order.selected.filter(x => x.id !== itemId)
-               
-            }
-            return order
-        })
         updateCart(UPDATE_ORDERS, {
             orders
         })
-
         return
     }
 
@@ -180,33 +182,47 @@ function Cart() {
         )
     }, [cartState.orders, setCartValue])
 
-    function handleOrderChange(isAdded) {
-
+    function handleOrderDelete(orderId) {
+        let orders = cartState?.orders
+        orders.filter((deletedOrder) => {
+            return deletedOrder.id !== orderId
+        })
+        updateCart(UPDATE_ORDERS, {
+            orders
+        })
+        console.log(orders)
     }
     return (
         <OrdersWrapper>
             <Header>
-                {cartState?.orders.length > 0 ? <h1>Confira seu pedido:</h1> : <h1>Nenhum pedido selecionado</h1>}
+                {cartState?.orders.length > 0 ?
+                    <h1>Confira seu pedido:</h1> :
+                    <h1>Nenhum pedido selecionado</h1>}
             </Header>
-
-            {cartState?.orders?.map(({ name, price, selected, id, extraIngredients, quantity }) => {
+            {cartState?.orders?.map(({ name,
+                price,
+                selected,
+                id,
+                extraIngredients,
+                quantity,
+                productPrice }) => {
                 const selectedIds = selected.map((item) => item.id)
                 return (
                     <Card key={id}>
                         <CardContainer>
                             <OrderHeader>
-                                <div><h1>{name}</h1> </div>
+                                <div><h1>{name} {productPrice}</h1> </div>
                             </OrderHeader>
                             {selected?.length > 0 ?
                                 <div>
                                     <p>Items Extras Selecionados:</p>
                                     <SelectedIngredients>
                                         {
-                                            selected?.map((item) => {
+                                            selected?.map((item, i) => {
                                                 return (
                                                     <div>
                                                         <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
-                                                            ingredientHandler(id, item.id, false, extraIngredients, price)
+                                                            ingredientHandler(id, item.id, false, extraIngredients, price, i)
                                                         }
                                                         } />
                                                         </h4>
@@ -217,7 +233,7 @@ function Cart() {
                                     </SelectedIngredients>
                                 </div>
                                 : ""}
-                            {selected?.length > 3 || extraIngredients.length === 0 ?
+                            {selected?.length >= 3 || extraIngredients.length === 0 ?
                                 ""
                                 : <div>
                                     <p>Adicionar itens:</p>
@@ -225,11 +241,11 @@ function Cart() {
                                         {
                                             extraIngredients?.filter(
                                                 (item) => !selectedIds.includes(item.id)
-                                            ).map((item, index) => {
+                                            ).map((item, i) => {
                                                 return (
                                                     <div>
                                                         <h4>{item.name} - R$ {item.price} <MdAdd color="#05fc2a" onClick={() => {
-                                                            ingredientHandler(id, item.id, true, extraIngredients, price)
+                                                            ingredientHandler(id, item.id, true, extraIngredients, price, i)
                                                         }}
                                                         />
                                                         </h4>
@@ -244,8 +260,9 @@ function Cart() {
                             <div>
                                 <h1>{quantity}</h1>
                                 <h1>R$: {String(price.toFixed(2)).replace('.', ',')}</h1>
-                                <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} />
-                                <MdRemove onClick={() => handleOrderChange(false)} />
+                                {/* <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} /> */}
+                                <h2>Remover</h2>
+                                <MdRemove onClick={() => handleOrderDelete(id)} />
                             </div>
                         </OrderBody>
                     </Card>
