@@ -3,6 +3,7 @@ import { MdAdd, MdRemove } from 'react-icons/md'
 import useCart from '../../hooks/useCart/useCart'
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer'
 import { useEffect, useState } from 'react'
+import ReactWhatsapp from 'react-whatsapp';
 
 
 
@@ -118,7 +119,41 @@ font-size: 2em;
 `
 const ClosingOrder = styled.div`
 color: white;
+display: flex;
+flex-direction: column;
+button{
+    background: blue;
+    color: white;
+    border-radius: 3px;
+    height: 40px;
+}
 `
+const DeleteOrderModal = styled.div`
+visibility: ${({ isModalOpen }) => isModalOpen ? 'visible' : 'hidden'};
+height: 45%;
+width: 50%;
+position: fixed;
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+align-items: center;
+background: #5e7e7e;
+color: white;
+@media (max-width: 768px){
+    h1{
+font-size: 24px;
+background: ;
+}
+}
+
+button{
+    color: red;
+    height: 35px;
+    width: 40%;
+}
+`
+
+
 
 function Cart() {
 
@@ -127,12 +162,23 @@ function Cart() {
     const newCart = useCart()
     const { cartState, updateCart } = newCart
     const [cartValue, setCartValue] = useState(0)
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        const prices = cartState?.orders.map((item) => {
+            return item.price
+        })
+        setCartValue(
+            prices?.reduce((prev, next) => {
+                return (prev + next)
+            }, 0).toFixed(2)
+        )
+    }, [cartState.orders, setCartValue])
 
 
     function ingredientHandler(ordersId, itemId, isAdded, ingredients) {
         let orders = cartState?.orders
         let prices = []
-
         if (isAdded) {
             orders = orders.map((order, key) => {
                 if (order.id === ordersId) {
@@ -170,28 +216,44 @@ function Cart() {
         })
         return
     }
-
-    useEffect(() => {
-        const prices = cartState?.orders.map((item) => {
-            return item.price
-        })
-        setCartValue(
-            prices?.reduce((prev, next) => {
-                return (prev + next)
-            }, 0).toFixed(2)
-        )
-    }, [cartState.orders, setCartValue])
-
     function handleOrderDelete(orderId) {
-        let orders = cartState?.orders
-        orders.filter((deletedOrder) => {
-            return deletedOrder.id !== orderId
+        let deletedOrder = cartState?.orders
+        const orders = deletedOrder.filter((order) => {
+            return order.id !== orderId
         })
         updateCart(UPDATE_ORDERS, {
             orders
         })
-        console.log(orders)
+        setModalOpen(false)
     }
+
+
+    let selected = cartState?.orders.map((order) => {
+        return order.selected       // array de objetos, inclui não adicionados!
+    })
+
+    console.log(selected)
+
+    const orderDetails = ""
+    //     cartState?.orders.map((order) => {        //não vai ter lógica dentro de string
+    //         selected > 0 ? selected.forEach((s) => { String(s.name) }) :
+    //             String(order.name)
+
+
+
+    //     }))
+
+
+
+    // cartState?.orders.forEach((order) => {
+    //     if (order.selected.length > 0) {
+    //         order.selected.forEach((selected) => {
+    //             console.log(selected.name)
+    //         })
+    //     }
+    // })
+
+
     return (
         <OrdersWrapper>
             <Header>
@@ -203,75 +265,103 @@ function Cart() {
                 price,
                 selected,
                 id,
+                index,
                 extraIngredients,
                 quantity,
                 productPrice }) => {
                 const selectedIds = selected.map((item) => item.id)
+
                 return (
-                    <Card key={id}>
-                        <CardContainer>
-                            <OrderHeader>
-                                <div><h1>{name} {productPrice}</h1> </div>
-                            </OrderHeader>
-                            {selected?.length > 0 ?
+                    <>
+                        <DeleteOrderModal isModalOpen={isModalOpen} id cartState >
+                            <h1>Tem certeza?</h1>
+                            <button onClick={() => handleOrderDelete(id, index)} >
+                                Sim
+                            </button >
+                            <button onClick={() => setModalOpen(!isModalOpen)} >
+                                Não
+                            </button >
+                        </DeleteOrderModal>
+
+                        <Card key={id}>
+                            <CardContainer>
+                                <OrderHeader>
+                                    <div><h1>{name} {productPrice}</h1> </div>
+                                </OrderHeader>
+                                {selected?.length > 0 ?
+                                    <div>
+                                        <p>Items Extras Selecionados:</p>
+                                        <SelectedIngredients>
+                                            {
+                                                selected?.map((item, i) => {
+                                                    return (
+                                                        <div>
+                                                            <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
+                                                                ingredientHandler(id, item.id, false, extraIngredients, price, i)
+                                                            }
+                                                            } />
+                                                            </h4>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </SelectedIngredients>
+                                    </div>
+                                    : ""}
+                                {selected?.length >= 2 || extraIngredients.length === 0 ?
+                                    ""
+                                    : <div>
+                                        <p>Adicionar itens:</p>
+                                        <SelectedIngredients key={id}>
+                                            {
+                                                extraIngredients?.filter(
+                                                    (item) => !selectedIds.includes(item.id)
+                                                ).map((item, i) => {
+                                                    return (
+                                                        <div>
+                                                            <h4>{item.name} - R$ {item.price} <MdAdd color="#05fc2a" onClick={() => {
+                                                                ingredientHandler(id, item.id, true, extraIngredients, price, i)
+                                                            }}
+                                                            />
+                                                            </h4>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </SelectedIngredients>
+                                    </div>}
+                            </CardContainer>
+                            <OrderBody>
                                 <div>
-                                    <p>Items Extras Selecionados:</p>
-                                    <SelectedIngredients>
-                                        {
-                                            selected?.map((item, i) => {
-                                                return (
-                                                    <div>
-                                                        <h4>{item.name} - R$ {item.price} <MdRemove onClick={() => {
-                                                            ingredientHandler(id, item.id, false, extraIngredients, price, i)
-                                                        }
-                                                        } />
-                                                        </h4>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </SelectedIngredients>
+                                    <h1>{quantity}</h1>
+                                    <h1>R$: {String(price.toFixed(2)).replace('.', ',')}</h1>
+                                    {/* <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} /> */}
+                                    <h2>Remover</h2>
+                                    <MdRemove onClick={() => setModalOpen(!isModalOpen)} />
                                 </div>
-                                : ""}
-                            {selected?.length >= 3 || extraIngredients.length === 0 ?
-                                ""
-                                : <div>
-                                    <p>Adicionar itens:</p>
-                                    <SelectedIngredients>
-                                        {
-                                            extraIngredients?.filter(
-                                                (item) => !selectedIds.includes(item.id)
-                                            ).map((item, i) => {
-                                                return (
-                                                    <div>
-                                                        <h4>{item.name} - R$ {item.price} <MdAdd color="#05fc2a" onClick={() => {
-                                                            ingredientHandler(id, item.id, true, extraIngredients, price, i)
-                                                        }}
-                                                        />
-                                                        </h4>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </SelectedIngredients>
-                                </div>}
-                        </CardContainer>
-                        <OrderBody>
-                            <div>
-                                <h1>{quantity}</h1>
-                                <h1>R$: {String(price.toFixed(2)).replace('.', ',')}</h1>
-                                {/* <MdAdd color="#05fc2a" onClick={() => handleOrderChange(true)} /> */}
-                                <h2>Remover</h2>
-                                <MdRemove onClick={() => handleOrderDelete(id)} />
-                            </div>
-                        </OrderBody>
-                    </Card>
+                            </OrderBody>
+                        </Card>
+                    </>
                 )
             })}
-            <ClosingOrder>
+
+            <ClosingOrder orderDetails>
                 {cartState.orders.length > 0 ? <h1>Valor Total: {String(cartValue).replace('.', ',')}</h1> : ""}
+                {cartState?.orders.length > 0 ?
+                    <ReactWhatsapp number="55-32-999150802" message={     //string only
+
+                        orderDetails
+
+
+
+
+                    }>
+                        Fechar pedido
+                    </ReactWhatsapp>
+                    : ""}
             </ClosingOrder>
         </OrdersWrapper >
+
     )
 }
 
