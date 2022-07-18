@@ -1,157 +1,11 @@
-import styled from 'styled-components'
+import * as Styled from './Styles';
 import { MdAdd, MdRemove } from 'react-icons/md'
+import { IoClose } from 'react-icons/io5'
 import useCart from '../../hooks/useCart/useCart'
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer'
 import { useEffect, useState } from 'react'
 import ReactWhatsapp from 'react-whatsapp';
-
-
-
-const Header = styled.div`
-font-size: 1.5em;
-margin: 1em;
-color: #c4c4c2;
-text-shadow: 1px 1px #a3223c;
-@media (max-width: 768px){
-    font-size: 1em;
-}
-`
-
-const OrdersWrapper = styled.div`
-padding: 2em;
-/* background-image: url("images/23657229.jpg"); */
-background: #27292e;
-min-height: 100vh;
-font-family: ${({ theme }) => theme.fonts.default};
-display: flex;
-flex-direction: column;
-align-items: center;
-`
-const Card = styled.div`
-width: 80vw;
-margin: 0.8em;
-display: grid;
-grid-template-columns: 5fr 2fr;
-background: rgba(0, 0, 0, .4);
-box-shadow: 0 0 4px black;
-border-radius: 5px;
-
-`
-const CardContainer = styled.div`
-border-radius: 3px;
-min-width: 100%;
-background: rgba(0, 0, 0, .9);
-display: flex;
-justify-content: flex-end;
-flex-direction: column;
-padding: 2em;
-@media (max-width: 768px){
-  padding: 1em;
-}
-p{
-    color: lightgrey;
-}
-`
-const OrderHeader = styled.div`
-display: flex;
-color: #a3223c;
-h2{
-color: white;
-text-shadow: 1px 1px grey;
-}
-flex-direction: column;
-h1{
-    margin-left: 20px;
-    /* text-shadow: 1px 1px 0 #edb2be; */
-    font-size: 45px;
-}
-svg{
-    margin: 0 0 -4px 6em;
-    color: #d4ac3f;
-}
-@media (max-width: 768px){
-  font-size: 18px;
-  padding: 0 auto;
-}
-
-`
-const SelectedIngredients = styled.div`
-color: lightgrey;
-background: #1c1c16;
-padding: 10px;
-border-radius: 3px;
-display: flex;
-flex-direction: column;
-margin-bottom: 5px;
-h4{
-    margin: 5px;
-    font-weight: 50;
-}
-@media (max-width: 768px){
-  font-size: 15px;
-}
-svg{
-    font-size: 30px;
-    margin: 0 0 -8px 10px;
-    color: #a3223c;
-    cursor: pointer;
-}
-`
-const OrderBody = styled.div`
-display: flex;
-background: rgba(0, 0, 0, .5);
-flex-direction: column;
-justify-content: center;
-text-align: center;
-;
-color: #5e5e5e;
-font-size: 1.4em;
-svg{
-color: #a3223c;
-font-size: 3em;
-margin: 0 10px 0 0;
-cursor: pointer;
-}
-h1{
-background: rgba(0, 0, 0, .7);
-font-size: 2em;
-}
-`
-const ClosingOrder = styled.div`
-color: white;
-display: flex;
-flex-direction: column;
-button{
-    background: blue;
-    color: white;
-    border-radius: 3px;
-    height: 40px;
-}
-`
-const DeleteOrderModal = styled.div`
-visibility: ${({ isModalOpen }) => isModalOpen ? 'visible' : 'hidden'};
-height: 45%;
-width: 50%;
-position: fixed;
-display: flex;
-flex-direction: column;
-justify-content: space-evenly;
-align-items: center;
-background: #5e7e7e;
-color: white;
-@media (max-width: 768px){
-    h1{
-font-size: 24px;
-background: ;
-}
-}
-
-button{
-    color: red;
-    height: 35px;
-    width: 40%;
-}
-`
+import WhatsAppOrder from '../../helpers/whatsAppOrder'
 
 
 
@@ -163,7 +17,12 @@ function Cart() {
     const { cartState, updateCart } = newCart
     const [cartValue, setCartValue] = useState(0)
     const [isModalOpen, setModalOpen] = useState(false);
-
+    const [isClosingModalOpen, setClosingModalOpen] = useState(false);
+    const [costumerData, setCostumerData] = useState({
+        address: "",
+        paymentType: "",
+    })
+    const [isDelivery, setIsDelivery] = useState(false)
     useEffect(() => {
         const prices = cartState?.orders.map((item) => {
             return item.price
@@ -176,11 +35,14 @@ function Cart() {
     }, [cartState.orders, setCartValue])
 
 
-    function ingredientHandler(ordersId, itemId, isAdded, ingredients) {
+    function ingredientHandler(ordersId,
+        itemId,
+        isAdded,
+        ingredients) {
         let orders = cartState?.orders
         let prices = []
         if (isAdded) {
-            orders = orders.map((order, key) => {
+            orders = orders.map((order) => {
                 if (order.id === ordersId) {
                     order.selected = [
                         ...order.selected, ingredients
@@ -188,17 +50,17 @@ function Cart() {
                     order.selected.forEach((item) => {
                         prices.push(parseFloat(item.price.replace(',', '.')))
                     })
-                    //soma todos os selecionados acumulando. errado.
+
                 }
                 return order
             })
-            const tony = prices.reduce((acc, price) => {
+            const sum = prices.reduce((acc, price) => {
                 return (acc + price)
             }, 0)
             const auxOrder = orders.find(order => order.id === ordersId);
-            auxOrder.price = (tony + parseFloat(auxOrder.productPrice.replace(',', '.')))
+            auxOrder.price = (sum + parseFloat(auxOrder.productPrice.replace(',', '.')))
         }
-        //this is so weird
+
         else {
             orders = orders.map(order => {
                 if (order.id === ordersId) {
@@ -208,7 +70,6 @@ function Cart() {
                 }
                 return order
             })
-
         }
 
         updateCart(UPDATE_ORDERS, {
@@ -226,42 +87,15 @@ function Cart() {
         })
         setModalOpen(false)
     }
-
-
-    let selected = cartState?.orders.map((order) => {
-        return order.selected       // array de objetos, inclui não adicionados!
-    })
-
-    console.log(selected)
-
-    const orderDetails = ""
-    //     cartState?.orders.map((order) => {        //não vai ter lógica dentro de string
-    //         selected > 0 ? selected.forEach((s) => { String(s.name) }) :
-    //             String(order.name)
-
-
-
-    //     }))
-
-
-
-    // cartState?.orders.forEach((order) => {
-    //     if (order.selected.length > 0) {
-    //         order.selected.forEach((selected) => {
-    //             console.log(selected.name)
-    //         })
-    //     }
-    // })
-
-
     return (
-        <OrdersWrapper>
-            <Header>
+        <Styled.OrdersWrapper>
+            <Styled.Header>
                 {cartState?.orders.length > 0 ?
                     <h1>Confira seu pedido:</h1> :
                     <h1>Nenhum pedido selecionado</h1>}
-            </Header>
-            {cartState?.orders?.map(({ name,
+            </Styled.Header>
+            {cartState?.orders?.map(({
+                name,
                 price,
                 selected,
                 id,
@@ -273,7 +107,7 @@ function Cart() {
 
                 return (
                     <>
-                        <DeleteOrderModal isModalOpen={isModalOpen} id cartState >
+                        <Styled.DeleteConfirmationModal isModalOpen={isModalOpen} cartState >
                             <h1>Tem certeza?</h1>
                             <button onClick={() => handleOrderDelete(id, index)} >
                                 Sim
@@ -281,17 +115,91 @@ function Cart() {
                             <button onClick={() => setModalOpen(!isModalOpen)} >
                                 Não
                             </button >
-                        </DeleteOrderModal>
-
-                        <Card key={id}>
-                            <CardContainer>
-                                <OrderHeader>
+                        </Styled.DeleteConfirmationModal>
+                        <Styled.ClosingOrderModal isClosingModalOpen={isClosingModalOpen} isDelivery={isDelivery}>
+                            <span id='close-btn' onClick={() => { setClosingModalOpen(false) }}><IoClose /></span>
+                            <h2>Preencha seus dados</h2>
+                            <form>
+                                <label style={{ margin: 20 }}>
+                                    Deseja entrega em casa? (<i>taxa de entrega:</i> R$2,50)
+                                </label>
+                                <span>
+                                    <input
+                                        type="radio"
+                                        name="entrega"
+                                        value={isDelivery}
+                                        onChange={() => setIsDelivery(true)}
+                                    /> Sim
+                                </span>
+                                <span>
+                                    <input
+                                        type="radio"
+                                        name="entrega"
+                                        value={isDelivery}
+                                        onChange={() => setIsDelivery(false)}
+                                    /> Não
+                                </span>
+                                <div id='endereco'>
+                                    <label>Informe o endereço para entrega:</label>
+                                    <input type="text"
+                                        value={costumerData.address}
+                                        name="endereço"
+                                        onChange={(e) =>
+                                            setCostumerData(
+                                                { ...costumerData, address: e.target.value })}
+                                    />
+                                </div>
+                                <label style={{ margin: 20 }}>Forma de pagamento</label>
+                                <span><input
+                                    type="radio"
+                                    value={costumerData.paymentType}
+                                    checked
+                                    name="pagamento"
+                                    onChange={() => setCostumerData(
+                                        { ...costumerData, paymentType: "dinheiro" })}
+                                /> dinheiro
+                                </span>
+                                <span>
+                                    <input type="radio"
+                                        value={costumerData.paymentType}
+                                        name="pagamento"
+                                        onChange={() =>
+                                            setCostumerData(
+                                                { ...costumerData, paymentType: "débito / crédito" })}
+                                    /> débito / crédito
+                                </span>
+                                <span>
+                                    <input
+                                        type="radio"
+                                        name="pagamento"
+                                        value={costumerData.paymentType}
+                                        onChange={(e) =>
+                                            setCostumerData(
+                                                { ...costumerData, paymentType: "pix" })}
+                                    /> pix
+                                </span>
+                            </form>
+                            {cartState?.orders.length > 0 ?
+                                <ReactWhatsapp number="55-32-999150802" message={     //string only
+                                    WhatsAppOrder(
+                                        cartState,
+                                        costumerData,
+                                        isDelivery,
+                                        cartValue)
+                                }>
+                                    Fechar pedido
+                                </ReactWhatsapp>
+                                : ""}
+                        </Styled.ClosingOrderModal>
+                        <Styled.Card key={id}>
+                            <Styled.CardContainer>
+                                <Styled.OrderHeader>
                                     <div><h1>{name} {productPrice}</h1> </div>
-                                </OrderHeader>
+                                </Styled.OrderHeader>
                                 {selected?.length > 0 ?
                                     <div>
                                         <p>Items Extras Selecionados:</p>
-                                        <SelectedIngredients>
+                                        <Styled.SelectedIngredients key={id}>
                                             {
                                                 selected?.map((item, i) => {
                                                     return (
@@ -305,14 +213,14 @@ function Cart() {
                                                     )
                                                 })
                                             }
-                                        </SelectedIngredients>
+                                        </Styled.SelectedIngredients>
                                     </div>
                                     : ""}
-                                {selected?.length >= 2 || extraIngredients.length === 0 ?
+                                {selected?.length === extraIngredients.length ?
                                     ""
                                     : <div>
                                         <p>Adicionar itens:</p>
-                                        <SelectedIngredients key={id}>
+                                        <Styled.SelectedIngredients key={id}>
                                             {
                                                 extraIngredients?.filter(
                                                     (item) => !selectedIds.includes(item.id)
@@ -328,10 +236,10 @@ function Cart() {
                                                     )
                                                 })
                                             }
-                                        </SelectedIngredients>
+                                        </Styled.SelectedIngredients>
                                     </div>}
-                            </CardContainer>
-                            <OrderBody>
+                            </Styled.CardContainer>
+                            <Styled.OrderBody>
                                 <div>
                                     <h1>{quantity}</h1>
                                     <h1>R$: {String(price.toFixed(2)).replace('.', ',')}</h1>
@@ -339,30 +247,20 @@ function Cart() {
                                     <h2>Remover</h2>
                                     <MdRemove onClick={() => setModalOpen(!isModalOpen)} />
                                 </div>
-                            </OrderBody>
-                        </Card>
+                            </Styled.OrderBody>
+                        </Styled.Card>
                     </>
                 )
             })}
-
-            <ClosingOrder orderDetails>
-                {cartState.orders.length > 0 ? <h1>Valor Total: {String(cartValue).replace('.', ',')}</h1> : ""}
-                {cartState?.orders.length > 0 ?
-                    <ReactWhatsapp number="55-32-999150802" message={     //string only
-
-                        orderDetails
-
-
-
-
-                    }>
-                        Fechar pedido
-                    </ReactWhatsapp>
-                    : ""}
-            </ClosingOrder>
-        </OrdersWrapper >
-
+            {cartState.orders.length > 0 ?
+                <Styled.ClosingOrder orderDetails>
+                    <h1>Valor Total: {String(cartValue).replace('.', ',')}</h1>
+                    <button onClick={() => setClosingModalOpen(!isClosingModalOpen)}>Fechar pedido</button>
+                </Styled.ClosingOrder>
+                : ""}
+        </Styled.OrdersWrapper >
     )
 }
 
 export default Cart
+

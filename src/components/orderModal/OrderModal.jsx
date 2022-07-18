@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { IoClose } from 'react-icons/io5'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,127 +8,26 @@ import ProductContext from '../../context/productContext'
 import { v4 as uuidv4 } from 'uuid';
 import useCart from '../../hooks/useCart/useCart';
 import { UPDATE_ORDERS } from '../../context/reducers/cartReducer';
-
-
-const StyledModalContainer = styled.div`
-width: 100vw;
-height: 100vh;
-background: rgba(0, 0, 0, .8);
-position: fixed;
-display: flex;
-justify-content: center;
-align-items: center;
-visibility: ${({ isModalOpen }) => isModalOpen ? 'visible' : 'hidden'};
-z-index: 1;
-`
-const StyledProductModal = styled.div`
-display: flex;
-padding: 30px;
-background: #f5f5f5;
-width: 80%;
-height: 80%;
-svg{
-cursor: pointer;
-}
-overflow: scroll;
-`
-const Image = styled.img`
-
-height: 150px;
-width: 180px;
-margin: 20px;
-borders-radius: 5px;
-borders: solid 1px grey;
-
-`
-const StyledHeader = styled.div`
-display: flex;
-borders: 1px solid;
-background: #fff;
-borders-radius: 3px;
-h1{
-    font-family: ${({ theme }) => theme.fonts.default};
-    color: #dd2e44;
-    font-size: 50px;
-    text-shadow: 1px 1px #525040;
-
-}
-h3{
-    font-family: ${({ theme }) => theme.fonts.default};
-    color:;
-
-    margin-left: 10px;
-
-}
-span{
-    display: flex;
-    align-items: center;
-
-}
-`
-const Button = styled.button`
-background: #173828;
-cursor: pointer;
-color: white;
-borders: none;
-borders-radius: 5px;
-width: 20em;
-height: 3em;
-`
-const ExtraIngredients = styled.div`
-display: column;
-
-`
-const StyledBody = styled.div`
-
-padding: 10px;
-borders: 1px solid;
-background: #fff;
-borders-radius: 3px;
-
-h4{
-    margin: 0;
-    color: #173828;
-    font-family: ${({ theme }) => theme.fonts.infoText};
-}
-svg{
-    width: 25px;
-}
-div{
- display: flex;
- align-items: center;
- height: 30px;
-}
-
-`
-const ProductDetails = styled.div`
-width: 98%;
-height:70%;
-h2{
-    font-family: ${({ theme }) => theme.fonts.default};
-    color: #0f6138;
-    margin-left: 15px;
-}
-
-`
-const Footer = styled.div`
-display: flex;
-justify-content: center;
-text-align: center;
-h2{
-    margin-left: 0;
-}
-`
+import * as Styled from './Styles'
 
 
 function ProductModal() {
 
-
     //context
-    const newProduct = useContext(ProductContext)
+    const contextProduct = useContext(ProductContext)
     const { cartState, updateCart } = useCart()
-    const { isModalOpen, extraIngredients, setModalOpen } = newProduct;
-    const { product: { id, name, ingredients, description, imgUrl, price } } = newProduct;
+    const { isModalOpen,
+        extraIngredients,
+        setModalOpen
+    } = contextProduct;
+    const { product: {
+        id,
+        name,
+        ingredients,
+        description,
+        imgUrl,
+        price }
+    } = contextProduct;
 
 
     //state
@@ -157,9 +55,6 @@ function ProductModal() {
     //     })
     // }
 
-
-
-
     function addOrder() {
 
 
@@ -181,7 +76,6 @@ function ProductModal() {
                 })
             }
             )
-
         }
         else {
             updateCart(
@@ -194,7 +88,7 @@ function ProductModal() {
                     name,
                     productPrice: price,
                     price: extraIngredients.length > 0 ?
-                        parseFloat(ordersValue.replace(',', '.')) : quantityPrice  // drink our food?
+                        parseFloat(ordersValue.replace(',', '.')) : quantityPrice  // is it drink our food?
                 }]
             }
             )
@@ -233,11 +127,11 @@ function ProductModal() {
 
         <IconContext.Provider value={{ size: '50px', color: '#dd2e44' }}>
             <ToastContainer />
-            <StyledModalContainer isModalOpen={isModalOpen}>
-                <StyledProductModal >
-                    <ProductDetails>
-                        <StyledHeader>
-                            <Image src={isModalOpen ? imgUrl : ''} alt="" />
+            <Styled.ModalContainer isModalOpen={isModalOpen}>
+                <Styled.ProductModal >
+                    <Styled.ProductDetails>
+                        <Styled.Header>
+                            <Styled.Image src={isModalOpen ? imgUrl : ''} alt="" />
                             <div>
                                 <span>
                                     <h1>{isModalOpen ? name.toUpperCase() : ''}</h1>
@@ -248,16 +142,16 @@ function ProductModal() {
                                     return str[0].toUpperCase() + str.substr(1);
                                 }).reduce((prev, curr) => [prev, ', ', curr]) : ""}</h3>
                             </div>
-                        </StyledHeader>
+                        </Styled.Header>
                         <p>{isModalOpen ? description : ''}</p>
                         <h2>{extraIngredients.length > 0 ? 'Adicionais:' : `Quantidade: ${productQuantity}`}</h2>
-                        <StyledBody>
+                        <Styled.Body>
                             {
                                 extraIngredients.length > 0 ?
                                     extraIngredients?.map(({ name, price, id }, index) => {
                                         const str = name;
                                         return (
-                                            <ExtraIngredients key={index}>
+                                            <Styled.ExtraIngredients key={index}>
                                                 <h4>{`${str[0].toUpperCase() + str.substr(1)} (R$ ${price})`}</h4>
                                                 <input
                                                     id={id}
@@ -267,26 +161,26 @@ function ProductModal() {
                                                     checked={checkedState[id]}
                                                     onChange={() => handleOnChange(id)}
                                                 />
-                                            </ExtraIngredients>)
+                                            </Styled.ExtraIngredients>)
                                     })
                                     :
-                                    <ExtraIngredients>
+                                    <Styled.ExtraIngredients>
                                         <MdAdd color="green" onClick={() => handleQuantityChange(true, price)} />
                                         <MdRemove onClick={() => handleQuantityChange(false, price)} />
-                                    </ExtraIngredients>
+                                    </Styled.ExtraIngredients>
                             }
 
-                        </StyledBody>
-                        <Footer>
+                        </Styled.Body>
+                        <Styled.Footer>
                             <div>
                                 <h2>R$ {extraIngredients.length > 0 ? ordersValue : String(quantityPrice.toFixed(2)).replace('.', ',')}</h2>
-                                <Button onClick={() => addOrder()}> Adicionar ao carrinho</Button>
+                                <Styled.Button onClick={() => addOrder()}> Adicionar ao carrinho</Styled.Button>
                             </div>
-                        </Footer>
-                    </ProductDetails>
+                        </Styled.Footer>
+                    </Styled.ProductDetails>
                     <IoClose onClick={() => clearOrder()} /> {/*  change it to a function that cleans the orders state and close de modal */}
-                </StyledProductModal>
-            </StyledModalContainer>
+                </Styled.ProductModal>
+            </Styled.ModalContainer>
         </IconContext.Provider >
     )
 }

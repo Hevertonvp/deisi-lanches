@@ -1,37 +1,9 @@
 import { useContext } from 'react'
 import ProductContext from '../../context/productContext'
 import ProductCard from '../product/ProductCard'
-import styled from 'styled-components'
+import * as Styled from './Styles'
 
 
-
-
-const StyledProductsContainer = styled.div`
-
-
-padding-top: 4em;
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-justify-content: center;
-row-gap: 20px;
-column-gap: 20px;
-font-family: ${({ theme }) => theme.fonts.default};
-margin-bottom: 2em;
-
-`
-
-const StyledProductHeader = styled.div`
-font-family: ${({ theme }) => theme.fonts.default};
-background:
-  radial-gradient(circle, #2c090d 20%, rgba(0,0,255,0.5) 190%, transparent),
-  url('/images/backgroundburger.png');
-padding: 10px;
-color: white;
-text-shadow: 5px 5px black;
-text-align: center;
-font-size: 2em;
-`
 
 
 function Products() {
@@ -40,10 +12,10 @@ function Products() {
 
     return (
         <>
-            <StyledProductHeader>
+            <Styled.ProductHeader>
                 <h1>Hamburguer</h1>
-            </StyledProductHeader>
-            <StyledProductsContainer>
+            </Styled.ProductHeader>
+            <Styled.ProductsContainer>
                 {products.hamburgers?.map((hamburger) => {
                     return (
                         <ProductCard
@@ -52,11 +24,11 @@ function Products() {
                         />
                     )
                 })}
-            </StyledProductsContainer >
-            <StyledProductHeader>
+            </Styled.ProductsContainer >
+            <Styled.ProductHeader>
                 <h1>Hot Dogs</h1>
-            </StyledProductHeader>
-            <StyledProductsContainer>
+            </Styled.ProductHeader>
+            <Styled.ProductsContainer>
                 {products.hotdogs?.map((hotdog) => {
                     return (
                         <ProductCard
@@ -65,11 +37,11 @@ function Products() {
                         />
                     )
                 })}
-            </StyledProductsContainer>
-            <StyledProductHeader>
+            </Styled.ProductsContainer>
+            <Styled.ProductHeader>
                 <h1>Bebidas</h1>
-            </StyledProductHeader>
-            <StyledProductsContainer>
+            </Styled.ProductHeader>
+            <Styled.ProductsContainer>
                 {products.drinks?.map((drink) => {
                     return (
                         <ProductCard
@@ -78,7 +50,7 @@ function Products() {
                         />
                     )
                 })}
-            </StyledProductsContainer>
+            </Styled.ProductsContainer>
         </>
     )
 }

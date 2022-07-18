@@ -1,5 +1,5 @@
 import NavBar from "./components/navbar/NavBar";
-import GlobalStyles from "../src/styles/Global";
+import GlobalStyles from "../src/styles/global-styles";
 import { ThemeProvider } from "styled-components";
 import DemoCarousel from "./components/carousel/Carousel";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -8,21 +8,12 @@ import Cardapio from "./components/cardapio/Cardapio";
 import OrderModal from "./components/orderModal/OrderModal";
 import { ProductProvider } from "./context/productContext.js";
 import { CartProvider } from "./context/CartContext";
-import { useState } from "react";
 import Cart from "./components/cart/Cart";
 import { cartReducer, initialState } from "./context/reducers/cartReducer";
+import {theme} from './styles/theme'
 
 function App() {
-  const theme = {
-    colors: {
-      body: "rgba(4, 11, 43, .7)",
-    },
-    fonts: {
-      default: "'Francois One', sans-serif",
-      infoText: "'Archivo', sans-serif",
-      colors: {},
-    },
-  };
+  
 
   return (
     <ThemeProvider theme={theme}>
