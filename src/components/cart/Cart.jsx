@@ -18,11 +18,17 @@ function Cart() {
     const [cartValue, setCartValue] = useState(0)
     const [isModalOpen, setModalOpen] = useState(false);
     const [isClosingModalOpen, setClosingModalOpen] = useState(false);
+    const [isDelivery, setIsDelivery] = useState(false);
     const [costumerData, setCostumerData] = useState({
         address: "",
         paymentType: "",
     })
-    const [isDelivery, setIsDelivery] = useState(false)
+    const paymentMethods = ["Dinheiro", "Débito/Crédito", "Pix"]  // later, coming from backend!
+    const [checkedState, setCheckedState] = useState(new Array(paymentMethods.length).fill(false))
+    const [paymentMethod, setPaymentMethod] = useState("")
+
+    console.log(isDelivery)
+
     useEffect(() => {
         const prices = cartState?.orders.map((item) => {
             return item.price
@@ -87,6 +93,14 @@ function Cart() {
         })
         setModalOpen(false)
     }
+    function checkedHandler(position, name) {
+        setCheckedState(
+            checkedState.map((item, index) =>
+                index === position ? item = true : item = false
+            )
+        )
+        setPaymentMethod(name)
+    }
     return (
         <Styled.OrdersWrapper>
             <Styled.Header>
@@ -104,7 +118,6 @@ function Cart() {
                 quantity,
                 productPrice }) => {
                 const selectedIds = selected.map((item) => item.id)
-
                 return (
                     <>
                         <Styled.DeleteConfirmationModal isModalOpen={isModalOpen} cartState >
@@ -120,28 +133,19 @@ function Cart() {
                             <span id='close-btn' onClick={() => { setClosingModalOpen(false) }}><IoClose /></span>
                             <h2>Preencha seus dados</h2>
                             <form>
-                                <label style={{ margin: 20 }}>
-                                    Deseja entrega em casa? (<i>taxa de entrega:</i> R$2,50)
-                                </label>
-                                <span>
+                                <span style={{ marginBottom: 30, marginTop:30 }}>
+                                    Marque essa opção caso deseje que o lanche seja entregue na sua casa (<i>taxa de entrega:</i> R$2,50)
                                     <input
-                                        type="radio"
+                                        type="checkbox"
                                         name="entrega"
-                                        value={isDelivery}
-                                        onChange={() => setIsDelivery(true)}
-                                    /> Sim
+                                        onClick={() => setIsDelivery(!isDelivery)}
+                                    />
                                 </span>
-                                <span>
-                                    <input
-                                        type="radio"
-                                        name="entrega"
-                                        value={isDelivery}
-                                        onChange={() => setIsDelivery(false)}
-                                    /> Não
-                                </span>
+
                                 <div id='endereco'>
                                     <label>Informe o endereço para entrega:</label>
-                                    <input type="text"
+                                    <input
+                                        type="text"
                                         value={costumerData.address}
                                         name="endereço"
                                         onChange={(e) =>
@@ -149,42 +153,29 @@ function Cart() {
                                                 { ...costumerData, address: e.target.value })}
                                     />
                                 </div>
-                                <label style={{ margin: 20 }}>Forma de pagamento</label>
-                                <span><input
-                                    type="radio"
-                                    value={costumerData.paymentType}
-                                    checked
-                                    name="pagamento"
-                                    onChange={() => setCostumerData(
-                                        { ...costumerData, paymentType: "dinheiro" })}
-                                /> dinheiro
-                                </span>
-                                <span>
-                                    <input type="radio"
-                                        value={costumerData.paymentType}
-                                        name="pagamento"
-                                        onChange={() =>
-                                            setCostumerData(
-                                                { ...costumerData, paymentType: "débito / crédito" })}
-                                    /> débito / crédito
-                                </span>
-                                <span>
-                                    <input
-                                        type="radio"
-                                        name="pagamento"
-                                        value={costumerData.paymentType}
-                                        onChange={(e) =>
-                                            setCostumerData(
-                                                { ...costumerData, paymentType: "pix" })}
-                                    /> pix
-                                </span>
+                                <label style={{ marginTop: 30 }}>Forma de pagamento</label>
+                                {
+                                    paymentMethods.map((item, index) => {
+                                        return (
+                                            <div>
+                                                {item}
+                                                <input
+                                                    type="checkbox"
+                                                    checked={checkedState[index]}
+                                                    onChange={() => checkedHandler(index, item)}
+                                                />
+                                            </div>
+                                        )
+                                    })}
+
                             </form>
                             {cartState?.orders.length > 0 ?
                                 <ReactWhatsapp number="55-32-999150802" message={     //string only
                                     WhatsAppOrder(
+                                        isDelivery,
+                                        paymentMethod,
                                         cartState,
                                         costumerData,
-                                        isDelivery,
                                         cartValue)
                                 }>
                                     Fechar pedido
@@ -254,7 +245,7 @@ function Cart() {
             })}
             {cartState.orders.length > 0 ?
                 <Styled.ClosingOrder orderDetails>
-                    <h1>Valor Total: {String(cartValue).replace('.', ',')}</h1>
+                    <h1>Valor Total:  R${String(cartValue).replace('.', ',')}</h1>
                     <button onClick={() => setClosingModalOpen(!isClosingModalOpen)}>Fechar pedido</button>
                 </Styled.ClosingOrder>
                 : ""}

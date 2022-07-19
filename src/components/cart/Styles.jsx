@@ -174,6 +174,9 @@ label {
 }
 #endereco{
     visibility: ${({ isDelivery }) => isDelivery ? 'visible' : 'hidden'};
+    input{
+        width: 80%;
+    }
 }
 `
 

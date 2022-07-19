@@ -35,8 +35,14 @@ function ProductModal() {
     const [checkedState, setCheckedState] = useState({});
     const [productQuantity, setProductQuantity] = useState(1)
 
+
+    
+
     const floatPrice = parseFloat(price?.replace(',', '.'))
     const quantityPrice = (floatPrice * productQuantity)
+
+
+
 
     useEffect(() => {
         let initialChecked = extraIngredients.map(e => [e.id, false])
