@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import NavBar from "./components/navbar/NavBar";
 import GlobalStyles from "../src/styles/global-styles";
 import { ThemeProvider } from "styled-components";
@@ -9,15 +10,23 @@ import OrderModal from "./components/orderModal/OrderModal";
 import { ProductProvider } from "./context/productContext.js";
 import { CartProvider } from "./context/CartContext";
 import Cart from "./components/cart/Cart";
+import { ToggleButton } from "./components/darkModeBtnToggler/Toggle";
 import { cartReducer, initialState } from "./context/reducers/cartReducer";
-import {theme} from './styles/theme'
+import { lightTheme, darkTheme } from "./styles/theme"
+
 
 function App() {
+
+  const [theme, setTheme] = useState('light');
   
+  const toogleTheme = () => {
+    theme === 'light' ? setTheme('dark') : setTheme('light')    // add a custom hook for this!
+}
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyles />
+      <ToggleButton themeToggler={toogleTheme}>Switch Theme</ToggleButton>
       <Router>
         <ProductProvider>
           <CartProvider initialState={initialState} reducer={cartReducer}>

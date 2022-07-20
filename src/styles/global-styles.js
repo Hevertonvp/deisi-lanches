@@ -6,13 +6,12 @@ const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
 }
 
-body {
-  
+body { 
   background: ${({theme})=> theme.colors.body};
-  color: hsl(192, 100%, 9%);
-  font-family: 'sans-serif';
+  color: ${({ theme }) => theme.text};
   font-size: 1,5em;
   margin: 0;
+  transition: all 0.50s linear;
 }
 
 p{
